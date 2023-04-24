@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:note_management_system/item.dart';
-
-class mainPage extends StatefulWidget {
-  const mainPage({super.key});
-
+import 'package:note_management_system/dashboard_page/item.dart';
+import 'package:note_management_system/form/SignUp_SignIn/SignIn.dart';
+import 'package:note_management_system/ultilities/Constant.dart';
+class DashboardPage extends StatelessWidget {
+  final dynamic user;
+  const DashboardPage({required this.user}) : super();
   @override
-  State<mainPage> createState() => _mainPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MainPage(),
+    );
+  }
 }
 
-class _mainPageState extends State<mainPage> {
-  // int _selectIndex=0;
-  // final drawerItems=[
-  //   new DrawerItems()
-  // ]
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +34,7 @@ class _mainPageState extends State<mainPage> {
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.green),
               accountName: const Text('Note Management System'),
-              accountEmail: Text('example@gmail.com'),
+              accountEmail: Text('mail'),
               currentAccountPicture: CircleAvatar(
                   backgroundImage: AssetImage('images/download.jpg')),
             ),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:note_management_system/controller/UserController.dart';
+import 'package:note_management_system/dashboard_page/dashboard.dart';
 import 'package:note_management_system/db/UserDatabase.dart';
 import 'package:note_management_system/form/SignUp_SignIn/SignUp.dart';
 
@@ -116,7 +117,7 @@ class _MySignInFormState extends State<_MySignInForm> {
                             MaterialPageRoute(
                               // Cái này chuyển đến dashboard khi login thành công
                               // Có thể thêm tham số userID khi chuyển trang để xử lý những dữ liệu khác khi cần user ID
-                              builder: (context) => PersonalInfoPage( user : user,), // Ở đây
+                              builder: (context) => DashboardPage( user : user,), // Ở đây
                             ),
                           );
                         } else {
