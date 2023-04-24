@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:note_management_system/model/User.dart';
@@ -15,7 +14,7 @@ class SQLHelper {
 
   static Future<Database> db() async {
     return openDatabase(
-        'user.db',
+        'note_management_system.db',
         version: 1,
         onCreate: (Database database, int version) async {
           await createUserTable(database);
@@ -26,7 +25,7 @@ class SQLHelper {
   static Future<void> createUser(User user) async {
     final db = await SQLHelper.db();
 
-    final id = await db.insert('users', user.toMap(),
+    await db.insert('users', user.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
 
   }

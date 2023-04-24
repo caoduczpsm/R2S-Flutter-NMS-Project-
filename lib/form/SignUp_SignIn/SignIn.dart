@@ -1,11 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:note_management_system/controller/UserController.dart';
 import 'package:note_management_system/db/UserDatabase.dart';
 import 'package:note_management_system/form/SignUp_SignIn/SignUp.dart';
-
-import '../../model/User.dart';
 
 void main() => runApp(const SignInForm());
 
@@ -107,7 +104,7 @@ class _MySignInFormState extends State<_MySignInForm> {
                       onPressed:() async {
                         int? userID = await userController.login(_email.text.trim(), _password.text.trim());
                         if (userID !=null){
-                          final user = await SQLHelper.getUserById(userID!);
+                          final user = await SQLHelper.getUserById(userID);
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Login Successful')));
@@ -149,7 +146,7 @@ class _MySignInFormState extends State<_MySignInForm> {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),
-    );;
+    );
   }
 }
 
@@ -157,7 +154,7 @@ class _MySignInFormState extends State<_MySignInForm> {
 class PersonalInfoPage extends StatelessWidget {
   final dynamic user;
 
-  const PersonalInfoPage({required this.user}) : super();
+  const PersonalInfoPage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
