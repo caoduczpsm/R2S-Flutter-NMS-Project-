@@ -1,8 +1,11 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:note_management_system/controller/UserController.dart';
 import 'package:note_management_system/db/UserDatabase.dart';
 import 'package:note_management_system/form/SignUp_SignIn/SignUp.dart';
+
+import '../../model/User.dart';
 
 void main() => runApp(const SignInForm());
 
@@ -146,7 +149,7 @@ class _MySignInFormState extends State<_MySignInForm> {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),
-    );
+    );;
   }
 }
 
@@ -154,7 +157,7 @@ class _MySignInFormState extends State<_MySignInForm> {
 class PersonalInfoPage extends StatelessWidget {
   final dynamic user;
 
-  const PersonalInfoPage({super.key, required this.user});
+  const PersonalInfoPage({required this.user}) : super();
 
   @override
   Widget build(BuildContext context) {
