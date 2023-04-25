@@ -5,9 +5,8 @@ class ItemDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Item page')),
-      body: Center(),
+    return const Scaffold(
+      body: Center(child: Text("TEST"),),
     );
   }
 }

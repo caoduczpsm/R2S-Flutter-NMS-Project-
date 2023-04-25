@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:note_management_system/item.dart';
+import 'package:note_management_system/model/User.dart';
 
-class mainPage extends StatefulWidget {
-  const mainPage({super.key});
+// ignore: must_be_immutable
+class NoteApp extends StatefulWidget {
+
+  User user;
+
+  NoteApp({super.key, required this.user});
 
   @override
-  State<mainPage> createState() => _mainPageState();
+  // ignore: no_logic_in_create_state
+  State<NoteApp> createState() => _NoteAppState(user: user);
 }
 
-class _mainPageState extends State<mainPage> {
-  // int _selectIndex=0;
-  // final drawerItems=[
-  //   new DrawerItems()
-  // ]
+class _NoteAppState extends State<NoteApp> {
+
+  User user;
+
+  _NoteAppState({required this.user});
+
+  Widget _currentScreen = const ItemDashboard();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,68 +31,119 @@ class _mainPageState extends State<mainPage> {
       ),
       drawer: Drawer(
         child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.green),
-              accountName: const Text('Note Management System'),
-              accountEmail: Text('example@gmail.com'),
-              currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage('images/download.jpg')),
-            ),
-            ListTile(
-              leading: Icon(Icons.camera),
-              title: const Text('Home'),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
-              },
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('images/drawer_background.jpg'),
+                  fit: BoxFit.cover,
+                ),
               ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 100.0,
+                    height: 100.0,
+                    child: Image.asset('images/logo.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const Text('Group 1',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  Text(user.email!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             ListTile(
-              leading: Icon(Icons.image),
-              title: const Text('Category'),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
+              title: const Text('Home'),
+              leading: const Icon(Icons.home),
+              onTap: () {
+                setState(() {
+                  _currentScreen = const ItemDashboard();
+                });
+                Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.video_call),
-              title: const Text('Priority'),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: const Text('Status'),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
               title: const Text('Note'),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
+              leading: const Icon(Icons.note),
+              onTap: () {
+                setState(() {
+                  _currentScreen = const ItemDashboard();
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Category'),
+              leading: const Icon(Icons.category),
+              onTap: () {
+                setState(() {
+                  _currentScreen = const ItemDashboard();
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Priority'),
+              leading: const Icon(Icons.low_priority),
+              onTap: () {
+                setState(() {
+                  _currentScreen = const ItemDashboard();
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Status'),
+              leading: const Icon(Icons.signal_wifi_statusbar_4_bar),
+              onTap: () {
+                setState(() {
+                  _currentScreen = const ItemDashboard();
+                });
+                Navigator.pop(context);
               },
             ),
             const Divider(color: Colors.black),
-            const Text('Account'),
+            Container(
+              margin: const EdgeInsets.only(top: 5, left: 15),
+              child: const Text('Account'),
+            ),
             ListTile(
-              leading: Icon(Icons.share),
+              leading: const Icon(Icons.settings),
               title: const Text('Edit Profile'),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
+              onTap: () {
+                setState(() {
+                  _currentScreen = const ItemDashboard();
+                });
+                Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.share_location),
+              leading: const Icon(Icons.password),
               title: const Text('Change password'),
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
+              onTap: () {
+                setState(() {
+                  _currentScreen = const ItemDashboard();
+                });
+                Navigator.pop(context);
               },
             )
           ],
         ),
       ),
+      body: _currentScreen,
     );
   }
 }

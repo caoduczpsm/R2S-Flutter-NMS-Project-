@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:note_management_system/controller/UserController.dart';
+import 'package:note_management_system/dashboard.dart';
 import 'package:note_management_system/db/UserDatabase.dart';
 import 'package:note_management_system/form/SignUp_SignIn/SignUp.dart';
-
-import '../../model/User.dart';
+import 'package:note_management_system/model/User.dart';
 
 void main() => runApp(const SignInForm());
 
@@ -116,7 +116,7 @@ class _MySignInFormState extends State<_MySignInForm> {
                             MaterialPageRoute(
                               // Cái này chuyển đến dashboard khi login thành công
                               // Có thể thêm tham số userID khi chuyển trang để xử lý những dữ liệu khác khi cần user ID
-                              builder: (context) => PersonalInfoPage( user : user,), // Ở đây
+                              builder: (context) => NoteApp( user : user as User), // Ở đây
                             ),
                           );
                         } else {
@@ -149,43 +149,8 @@ class _MySignInFormState extends State<_MySignInForm> {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),
-    );;
-  }
-}
-
-
-class PersonalInfoPage extends StatelessWidget {
-  final dynamic user;
-
-  const PersonalInfoPage({required this.user}) : super();
-
-  @override
-  Widget build(BuildContext context) {
-
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Personal Information'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            Text('ID: ${user.id}'),
-            const SizedBox(height: 16.0),
-            Text('Email: ${user.email}'),
-            const SizedBox(height: 16.0),
-            Text('Password: ${user.password}'),
-
-          ],
-        ),
-      ),
     );
   }
-
-
 }
 
 
