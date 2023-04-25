@@ -106,8 +106,8 @@ class _MySignInFormState extends State<_MySignInForm> {
                     ElevatedButton(
                       onPressed:() async {
                         int? userID = await userController.login(_email.text.trim(), _password.text.trim());
-                        if (userID !=null){
-                          final user = await SQLHelper.getUserById(userID);
+                        if (userID != null){
+                          final user = await UserSqlHelper.getUserById(userID);
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Login Successful')));

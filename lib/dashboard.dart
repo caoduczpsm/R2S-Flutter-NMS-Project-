@@ -27,7 +27,7 @@ class _NoteAppState extends State<NoteApp> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard Form'),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
       ),
       drawer: Drawer(
         child: ListView(
@@ -44,8 +44,8 @@ class _NoteAppState extends State<NoteApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 100.0,
-                    height: 100.0,
+                    width: 90.0,
+                    height: 90.0,
                     child: Image.asset('images/logo.png',
                       fit: BoxFit.contain,
                     ),
