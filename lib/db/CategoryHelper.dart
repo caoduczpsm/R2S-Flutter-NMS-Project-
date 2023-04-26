@@ -45,14 +45,15 @@ class CategoryHelper {
     return result;
   }
 
-  static Future<void> deleteItem(int id) async {
+  static Future<int?> deleteItem(int id) async {
     final db = await AppSQLHelper.db();
 
     try {
-      await db.delete(Constant.KEY_TABLE_CATEGORY, where: '${Constant.KEY_CATEGORY_ID} = ?', whereArgs: [id]);
+      return await db.delete(Constant.KEY_TABLE_CATEGORY, where: '${Constant.KEY_CATEGORY_ID} = ?', whereArgs: [id]);
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     }
+    return null;
   }
 
   static Future<bool> checkCategoryAvailableByNameAndUserID(String name, int userId) async {
