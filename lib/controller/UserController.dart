@@ -2,6 +2,9 @@ import 'package:note_management_system/db/UserDatabase.dart';
 
 import '../model/User.dart';
 
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
 
 class UserController {
 
@@ -19,7 +22,7 @@ class UserController {
     if (await UserSqlHelper.checkEmailAlreadyUsed(email)){
       User user = User(
         email: email,
-        password: password,
+        password: hashPassword(password),
       );
       UserSqlHelper.createUser(user);
       return true;
@@ -28,11 +31,17 @@ class UserController {
   }
 
   Future<int?> login(String email, String password) async{
-    final user = await UserSqlHelper.getUserByEmailPassword(email, password);
+    final user = await UserSqlHelper.getUserByEmailPassword(email, hashPassword(password));
     if (user != null){
       return user.id;
     } else {
       return null;
     }
+  }
+
+  String hashPassword(String password) {
+    var bytes = utf8.encode(password);
+    var digest = sha256.convert(bytes);
+    return digest.toString();
   }
 }
