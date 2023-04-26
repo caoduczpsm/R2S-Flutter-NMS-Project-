@@ -36,10 +36,11 @@ class AppSQLHelper {
     await database.execute('''CREATE TABLE ${Constant.KEY_TABLE_CATEGORY}(
         ${Constant.KEY_CATEGORY_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
         ${Constant.KEY_CATEGORY_NAME} TEXT NOT NULL,
-        ${Constant.KEY_CATEGORY_USER_ID} INTEGER NOT NULL,
+        
         ${Constant.KEY_CATEGORY_CREATED_DATE} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )''');
   }
+  //${Constant.KEY_CATEGORY_USER_ID} INTEGER NOT NULL,
 
   static Future<void> createNoteTable(Database database) async {
     await database.execute('''CREATE TABLE ${Constant.KEY_TABLE_NOTE}(
