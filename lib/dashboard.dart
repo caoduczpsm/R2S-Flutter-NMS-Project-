@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_management_system/form/Category.dart';
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
 
@@ -90,7 +91,7 @@ class _NoteAppState extends State<NoteApp> {
               leading: const Icon(Icons.category),
               onTap: () {
                 setState(() {
-                  _currentScreen = const ItemDashboard();
+                  _currentScreen = CategoryScreen(user: user);
                 });
                 Navigator.pop(context);
               },

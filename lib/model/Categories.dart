@@ -1,18 +1,18 @@
 import 'package:note_management_system/ultilities/Constant.dart';
-class Items {
+class Categories {
   final int? id;
-  final String? title;
+  final String? name;
   final String? createdAt;
-  //final int? userId;
+  final int? userId;
 
-  Items({this.id, this.title, this.createdAt});
+  Categories({this.id, this.name, this.createdAt, this.userId});
 
   Map<String, dynamic> toMap() {
     return {
       Constant.KEY_CATEGORY_ID : id,
-      Constant.KEY_CATEGORY_NAME : title,
+      Constant.KEY_CATEGORY_NAME : name,
       Constant.KEY_CATEGORY_CREATED_DATE : createdAt,
-      //Constant.KEY_CATEGORY_USER_ID : userId,
+      Constant.KEY_CATEGORY_USER_ID : userId,
     };
   }
 }
