@@ -2,10 +2,10 @@ import 'package:note_management_system/ultilities/Constant.dart';
 
 class User {
   final int? id;
-  final String? email;
-  final String? password;
-  final String? firstName;
-  final String? lastName;
+  String? email;
+  String? password;
+  String? firstName;
+  String? lastName;
 
   User({this.id, this.email, this.password,  this.firstName, this.lastName});
 
@@ -28,4 +28,6 @@ class User {
       lastName: map[Constant.KEY_USER_LAST_NAME],
     );
   }
+
+
 }

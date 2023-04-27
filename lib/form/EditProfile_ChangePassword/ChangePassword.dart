@@ -142,9 +142,11 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Change Successful!')));
                               setState(() {
+                                user.password = userController.hashPassword(_password.text.trim());
                                 _currentPassword.text = "";
                                 _password.text = "";
                                 _repassword.text = "";
+
                               });
 
                           } else {
