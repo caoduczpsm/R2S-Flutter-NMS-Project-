@@ -74,4 +74,7 @@ class Constant{
   static const KEY_NOTE_PRIORITY_ID = "priorities_id";
   // ignore: constant_identifier_names
   static const KEY_NOTE_USER_ID = "user_id";
+  static String getPriority() {
+    return KEY_TABLE_PRIORITY;
+  }
 }

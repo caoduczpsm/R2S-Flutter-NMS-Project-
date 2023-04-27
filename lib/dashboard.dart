@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
+import 'package:note_management_system/ultilities/Constant.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 // ignore: must_be_immutable
 class NoteApp extends StatefulWidget {
@@ -21,7 +23,12 @@ class _NoteAppState extends State<NoteApp> {
   _NoteAppState({required this.user});
 
   Widget _currentScreen = const ItemDashboard();
+  Map<String, double> dataMap = {
+    "Processing": 60,
+    "Done": 20,
+    "Pending": 20,
 
+  };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +83,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Note'),
+              title: const Text(' ${Constant.KEY_TABLE_CATEGORY}'),
               leading: const Icon(Icons.note),
               onTap: () {
                 setState(() {
@@ -86,7 +93,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Category'),
+              title: const Text('${Constant.KEY_TABLE_PRIORITY}'),
               leading: const Icon(Icons.category),
               onTap: () {
                 setState(() {
@@ -96,7 +103,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Priority'),
+              title: const Text(' ${Constant.KEY_TABLE_STATUS}'),
               leading: const Icon(Icons.low_priority),
               onTap: () {
                 setState(() {
@@ -106,7 +113,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Status'),
+              title: const Text(' ${Constant.KEY_TABLE_NOTE}'),
               leading: const Icon(Icons.signal_wifi_statusbar_4_bar),
               onTap: () {
                 setState(() {
@@ -143,7 +150,10 @@ class _NoteAppState extends State<NoteApp> {
           ],
         ),
       ),
-      body: _currentScreen,
+      body:
+      // _currentScreen,
+      PieChart(dataMap: dataMap)
+
     );
   }
 }
