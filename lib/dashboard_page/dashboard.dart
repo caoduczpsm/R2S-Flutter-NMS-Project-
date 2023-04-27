@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD:lib/dashboard.dart
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
 import 'package:note_management_system/ultilities/Constant.dart';
@@ -29,6 +30,30 @@ class _NoteAppState extends State<NoteApp> {
     "Pending": 20,
 
   };
+=======
+import 'package:note_management_system/dashboard_page/item.dart';
+import 'package:note_management_system/form/SignUp_SignIn/SignIn.dart';
+import 'package:note_management_system/ultilities/Constant.dart';
+class DashboardPage extends StatelessWidget {
+  final dynamic user;
+  const DashboardPage({required this.user}) : super();
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MainPage(),
+    );
+  }
+}
+
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
+>>>>>>> refs/remotes/origin/dashboard:lib/dashboard_page/dashboard.dart
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,12 +65,28 @@ class _NoteAppState extends State<NoteApp> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+<<<<<<< HEAD:lib/dashboard.dart
             DrawerHeader(
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('images/drawer_background.jpg'),
                   fit: BoxFit.cover,
                 ),
+=======
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Colors.green),
+              accountName: const Text('Note Management System'),
+              accountEmail: Text('mail'),
+              currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('images/download.jpg')),
+            ),
+            ListTile(
+              leading: Icon(Icons.camera),
+              title: const Text('Home'),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
+              },
+>>>>>>> refs/remotes/origin/dashboard:lib/dashboard_page/dashboard.dart
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
