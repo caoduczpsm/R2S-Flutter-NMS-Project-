@@ -54,6 +54,10 @@ class UserSqlHelper {
     }
   }
 
+  static Future<void> changePassword(String email, String newPassword) async{
+    final db = await AppSQLHelper.db();
 
+    await db.update(Constant.KEY_TABLE_USER,  {Constant.KEY_USER_PASSWORD: newPassword}, where: '${Constant.KEY_USER_EMAIL} = ?', whereArgs: [email]);
+  }
 
 }
