@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_management_system/form/Category.dart';
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
+import 'package:note_management_system/form/EditProfile_ChangePassword/ChangePassword.dart';
 
 // ignore: must_be_immutable
 class NoteApp extends StatefulWidget {
@@ -22,6 +23,8 @@ class _NoteAppState extends State<NoteApp> {
   _NoteAppState({required this.user});
 
   Widget _currentScreen = const ItemDashboard();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +139,7 @@ class _NoteAppState extends State<NoteApp> {
               title: const Text('Change password'),
               onTap: () {
                 setState(() {
-                  _currentScreen = const ItemDashboard();
+                  _currentScreen = ChangePasswordForm(user: user,);
                 });
                 Navigator.pop(context);
               },

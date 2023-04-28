@@ -22,7 +22,7 @@ class UserController {
     if (await UserSqlHelper.checkEmailAlreadyUsed(email)){
       User user = User(
         email: email,
-        password: hassPassword(password),
+        password: hashPassword(password),
       );
       UserSqlHelper.createUser(user);
       return true;
@@ -31,7 +31,7 @@ class UserController {
   }
 
   Future<int?> login(String email, String password) async{
-    final user = await UserSqlHelper.getUserByEmailPassword(email, hassPassword(password));
+    final user = await UserSqlHelper.getUserByEmailPassword(email, hashPassword(password));
     if (user != null){
       return user.id;
     } else {
@@ -39,7 +39,11 @@ class UserController {
     }
   }
 
-  String hassPassword(String password){
+  Future<void> changePassword(String email, String newPassword) async{
+    await UserSqlHelper.changePassword(email, newPassword);
+  }
+
+  String hashPassword(String password){
     var bytes = utf8.encode(password);
     var digest = sha256.convert(bytes);
     return digest.toString();
