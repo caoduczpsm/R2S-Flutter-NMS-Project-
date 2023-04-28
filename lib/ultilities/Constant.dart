@@ -74,4 +74,10 @@ class Constant{
   static const KEY_NOTE_PRIORITY_ID = "priorities_id";
   // ignore: constant_identifier_names
   static const KEY_NOTE_USER_ID = "user_id";
+  // ignore: constant_identifier_names
+  static const KEY_NOTE_CATEGORY_NAME = "category_name";
+  // ignore: constant_identifier_names
+  static const KEY_NOTE_PRIORITY_NAME = "priority_name";
+  // ignore: constant_identifier_names
+  static const KEY_NOTE_STATUS_NAME = "status_name";
 }
