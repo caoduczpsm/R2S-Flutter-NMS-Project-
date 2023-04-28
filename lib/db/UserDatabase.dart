@@ -65,4 +65,20 @@ class UserSqlHelper {
         where: '${Constant.KEY_USER_EMAIL} = ?', whereArgs: [email]);
   }
 
+  static Future<void> updateUserInfo(int id, String email, String firstName,
+      String lastName) async {
+
+    final db = await AppSQLHelper.db();
+
+    await db.update(
+      Constant.KEY_TABLE_USER,
+      {
+        Constant.KEY_USER_EMAIL: email,
+        Constant.KEY_USER_FIRST_NAME: firstName,
+        Constant.KEY_USER_LAST_NAME: lastName,
+      },
+      where: '${Constant.KEY_USER_ID} = ?', whereArgs: [id],
+    );
+  }
+
 }

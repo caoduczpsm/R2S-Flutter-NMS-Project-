@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../controller/UserController.dart';
 import '../../dashboard.dart';
@@ -6,52 +5,57 @@ import '../../model/User.dart';
 
 
 // ignore: must_be_immutable
-class ChangePasswordForm extends StatelessWidget {
+class EditProfileForm extends StatelessWidget {
   User user;
 
-  ChangePasswordForm({super.key, required this.user});
+  EditProfileForm({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _MyChangePasswordForm(user: user,),
+      body: _MyEditProfileForm(user: user,),
     );
   }
 }
 
 // ignore: must_be_immutable
-class _MyChangePasswordForm extends StatefulWidget {
+class _MyEditProfileForm extends StatefulWidget {
   User user;
 
-  _MyChangePasswordForm({required this.user});
+  _MyEditProfileForm({required this.user});
 
   @override
   // ignore: no_logic_in_create_state
-  State<_MyChangePasswordForm> createState() => _MyChangePasswordFormState(user: user);
+  State<_MyEditProfileForm> createState() => _MyEditProfileFormState(user: user);
 }
 
-class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
+class _MyEditProfileFormState extends State<_MyEditProfileForm> {
   User user;
 
-  _MyChangePasswordFormState({required this.user});
+  _MyEditProfileFormState({required this.user});
 
   UserController userController = UserController();
 
-  final _changePasswordForm = GlobalKey<FormState>();
-  final _currentPassword = TextEditingController();
-  final _password = TextEditingController();
-  final _repassword = TextEditingController();
+  final _editProfileForm = GlobalKey<FormState>();
+  final _firstName = TextEditingController();
+  final _lastName = TextEditingController();
+  final _email = TextEditingController();
+
 
   @override
   void dispose(){
     super.dispose();
-    _currentPassword.dispose();
-    _password.dispose();
-    _repassword.dispose();
+    _firstName.dispose();
+    _lastName.dispose();
+    _email.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (user.firstName != null) _firstName.text = user.firstName!;
+    if (user.lastName != null) _lastName.text = user.lastName!;
+    if (user.email != null) _email.text = user.email!;
+
     return Scaffold(
       body: Column(
         children: [
@@ -59,7 +63,7 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
             height: 30,
           ),
           const Center(
-            child: Text('Change Password'
+            child: Text('Edit Profile'
               ,style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -70,39 +74,37 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
             height: 30,
           ),
           Form(
-            key: _changePasswordForm,
+            key: _editProfileForm,
             child: Column(
               children: [
                 TextFormField(
                   decoration: const InputDecoration(
-                    hintText: 'Current Password',
-                    prefixIcon: Icon(Icons.password),
+                    hintText: 'First Name',
+                    prefixIcon: Icon(Icons.drive_file_rename_outline),
                   ),
                   validator: (value){
                     if (value == null || value.isEmpty){
-                      return 'Please enter password';
+                      return 'Please enter First Name';
                     }
                     return null;
                   },
-                  controller: _currentPassword,
-                  obscureText: true,
+                  controller: _firstName,
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    hintText: 'Password',
-                    prefixIcon: Icon(Icons.key),
+                    hintText: 'Last Name',
+                    prefixIcon: Icon(Icons.drive_file_rename_outline),
                   ),
                   validator: (value){
                     if (value == null || value.isEmpty){
-                      return 'Please enter password';
+                      return 'Please enter Last Name';
                     }
                     return null;
                   },
-                  controller: _password,
-                  obscureText: true,
+                  controller: _lastName,
                 ),
                 const SizedBox(
                   height: 5,
@@ -112,19 +114,18 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    hintText: 'Re-Password',
-                    prefixIcon: Icon(Icons.key),
+                    hintText: 'Email',
+                    prefixIcon: Icon(Icons.email),
                   ),
-                  validator: (value){
+                  validator: (value) {
                     if (value == null || value.isEmpty){
-                      return 'Please enter re-password';
-                    } else if (_password.text!=value){
-                      return 'Password does not match!';
+                      return 'Please enter email';
+                    } else if (userController.checkValidEmail(_email.text) == false){
+                      return 'Invalid Email';
                     }
                     return null;
                   },
-                  controller: _repassword,
-                  obscureText: true,
+                  controller: _email,
                 ),
                 const SizedBox(
                   height: 20,
@@ -134,39 +135,31 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
                   children: [
                     ElevatedButton(
                       onPressed:() async {
-                        if (_changePasswordForm.currentState!.validate()){
-                          if (user.password
-                              == userController.hashPassword(_currentPassword.text.trim())) {
+                        if (_editProfileForm.currentState!.validate()
+                            && user.id != null){
+                          userController.editProfile(user.id!, _email.text,
+                              _firstName.text, _lastName.text);
 
-                              userController.changePassword(user.email!,
-                                  userController.hashPassword(_password.text.trim()));
-
-                              ScaffoldMessenger.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Change Successful!')));
 
-                              setState(() {
-                                user.password = userController.hashPassword(_password.text.trim());
-                                _currentPassword.text = "";
-                                _password.text = "";
-                                _repassword.text = "";
+                          setState(() {
+                            user.email = _email.text;
+                            user.firstName = _firstName.text;
+                            user.lastName = _lastName.text;
 
-                              });
-
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Current Password '
-                                    'Does Not Match!')));
-                          }
-                        //  }
+                          });
                         }
                       },
                       child: const Text('Change'),
                     ),
                     ElevatedButton(
                       onPressed:(){
+
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context)
                         => NoteApp(user: user)));
+
                       },
                       child: const Text('Home'),
                     )

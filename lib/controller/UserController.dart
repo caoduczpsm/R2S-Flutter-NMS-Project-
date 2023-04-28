@@ -31,17 +31,28 @@ class UserController {
   }
 
   Future<int?> login(String email, String password) async{
-    final user = await UserSqlHelper.getUserByEmailPassword(email, hashPassword(password));
+    final user = await UserSqlHelper.getUserByEmailPassword(email,
+        hashPassword(password));
+
     if (user != null){
       return user.id;
     } else {
       return null;
     }
+
   }
 
   Future<void> changePassword(String email, String newPassword) async{
     await UserSqlHelper.changePassword(email, newPassword);
   }
+
+  Future<void> editProfile(int id, String email, String firstName,
+      String lastName) async{
+
+    await UserSqlHelper.updateUserInfo(id, email, firstName, lastName);
+
+  }
+
 
   String hashPassword(String password){
     var bytes = utf8.encode(password);

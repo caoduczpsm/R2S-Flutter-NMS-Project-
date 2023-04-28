@@ -109,9 +109,11 @@ class _MySignInFormState extends State<_MySignInForm> {
                             _password.text.trim());
                         if (userID != null){
                           final user = await UserSqlHelper.getUserById(userID);
+
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Login Successful')));
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -122,8 +124,10 @@ class _MySignInFormState extends State<_MySignInForm> {
                           );
                         } else {
                           if (!mounted) return;
+
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Invalid Email or Password')));
+                              const SnackBar(content: Text('Invalid Email '
+                                  'or Password')));
                         }
                       },
                       child: const Text('Login'),
