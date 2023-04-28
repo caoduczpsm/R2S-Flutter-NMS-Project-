@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/model/Categories.dart';
+import 'package:note_management_system/model/Priorities.dart';
 
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
@@ -61,8 +62,8 @@ class _PriorityScreenState extends State<_PriorityScreen> {
 
     if(id != null) {
       final existingJournal =
-      _priority.firstWhere((element) => element[Constant.KEY_CATEGORY_ID] == id);
-      _textNameController.text = existingJournal[Constant.KEY_CATEGORY_NAME];
+      _priority.firstWhere((element) => element[Constant.KEY_PRIORITY_ID] == id);
+      _textNameController.text = existingJournal[Constant.KEY_PRIORITY_NAME];
     }
 
     showModalBottomSheet(
@@ -121,7 +122,7 @@ class _PriorityScreenState extends State<_PriorityScreen> {
 
   Future<void> _addItem() async{
     String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
-    int? id = await PriorityHelper.createItem(Categories(
+    int? id = await PriorityHelper.createItem(Priorities(
         name: _textNameController.text,
         userId: user.id,
         createdAt: dateFormat
@@ -131,13 +132,13 @@ class _PriorityScreenState extends State<_PriorityScreen> {
     } else {
       if(!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Available Category')));
+          const SnackBar(content: Text('Available Priority')));
     }
   }
 
   Future<void> _updateItem(int id) async {
     String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
-    await PriorityHelper.updateItem(Categories(
+    await PriorityHelper.updateItem(Priorities(
         id: id,
         name: _textNameController.text,
         userId: user.id,
@@ -171,17 +172,17 @@ class _PriorityScreenState extends State<_PriorityScreen> {
               left: 10, right: 10, top: 10
           ),
           child: ListTile(
-            title: Text('Name: ${_priority[index][Constant.KEY_CATEGORY_NAME]}'),
-            subtitle: Text('Created At: ${_priority[index][Constant.KEY_CATEGORY_CREATED_DATE]}'),
+            title: Text('Name: ${_priority[index][Constant.KEY_PRIORITY_NAME]}'),
+            subtitle: Text('Created At: ${_priority[index][Constant.KEY_PRIORITY_CREATED_DATE]}'),
             trailing: SizedBox(
               width: 100,
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () => _showForm(_priority[index][Constant.KEY_CATEGORY_ID]),
+                    onPressed: () => _showForm(_priority[index][Constant.KEY_PRIORITY_ID]),
                     icon: const Icon(Icons.edit),),
                   IconButton(
-                    onPressed: () => _deleteItem(_priority[index][Constant.KEY_CATEGORY_ID]),
+                    onPressed: () => _deleteItem(_priority[index][Constant.KEY_PRIORITY_ID]),
                     icon: const Icon(Icons.delete),),
                 ],
               ),
