@@ -349,7 +349,7 @@ class _NoteScreenState extends State<_NoteScreen> {
     _refreshData();
   }
 
-  static const textNormalStyle = TextStyle(fontSize: 20);
+  static const textNormalStyle = TextStyle(fontSize: 18);
 
 
   @override
@@ -370,8 +370,8 @@ class _NoteScreenState extends State<_NoteScreen> {
                 children: [
                   SizedBox(
                     child: Container(
-                        width: 320,
-                        height: 210,
+                        width: 400,
+                        height: 220,
                         margin: const EdgeInsets.only(left: 5, right: 5),
                         child: Center(
                           child: Card(
