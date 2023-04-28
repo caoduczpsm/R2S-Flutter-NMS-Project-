@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/StatusHelper.dart';
 import 'package:note_management_system/model/Categories.dart';
+import 'package:note_management_system/model/Status.dart';
 
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
@@ -121,7 +122,7 @@ class _StatusScreenState extends State<_StatusScreen> {
 
   Future<void> _addItem() async{
     String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
-    int? id = await StatusHelper.createItem(Categories(
+    int? id = await StatusHelper.createItem(Status(
         name: _textNameController.text,
         userId: user.id,
         createdAt: dateFormat
@@ -137,7 +138,7 @@ class _StatusScreenState extends State<_StatusScreen> {
 
   Future<void> _updateItem(int id) async {
     String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
-    await StatusHelper.updateItem(Categories(
+    await StatusHelper.updateItem(Status(
         id: id,
         name: _textNameController.text,
         userId: user.id,
@@ -171,17 +172,17 @@ class _StatusScreenState extends State<_StatusScreen> {
               left: 10, right: 10, top: 10
           ),
           child: ListTile(
-            title: Text('Name: ${_status[index][Constant.KEY_CATEGORY_NAME]}'),
-            subtitle: Text('Created At: ${_status[index][Constant.KEY_CATEGORY_CREATED_DATE]}'),
+            title: Text('Name: ${_status[index][Constant.KEY_STATUS_NAME]}'),
+            subtitle: Text('Created At: ${_status[index][Constant.KEY_STATUS_CREATED_DATE]}'),
             trailing: SizedBox(
               width: 100,
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () => _showForm(_status[index][Constant.KEY_CATEGORY_ID]),
+                    onPressed: () => _showForm(_status[index][Constant.KEY_STATUS_ID]),
                     icon: const Icon(Icons.edit),),
                   IconButton(
-                    onPressed: () => _deleteItem(_status[index][Constant.KEY_CATEGORY_ID]),
+                    onPressed: () => _deleteItem(_status[index][Constant.KEY_STATUS_ID]),
                     icon: const Icon(Icons.delete),),
                 ],
               ),
