@@ -38,7 +38,8 @@ class PriorityHelper {
     final db = await AppSQLHelper.db();
 
     try {
-      return await db.delete(Constant.KEY_TABLE_PRIORITY, where: '${Constant.KEY_PRIORITY_ID} = ?', whereArgs: [id]);
+      return await db.delete(Constant.KEY_TABLE_PRIORITY,
+          where: '${Constant.KEY_PRIORITY_ID} = ?', whereArgs: [id]);
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     }
@@ -48,7 +49,8 @@ class PriorityHelper {
   static Future<bool> checkCategoryAvailableByNameAndUserID(String name, int userId) async {
     final db = await AppSQLHelper.db();
     final List<Map<String, dynamic>> maps = await db
-        .query(Constant.KEY_TABLE_PRIORITY, where: '${Constant.KEY_PRIORITY_NAME} = ? AND ${Constant.KEY_PRIORITY_USER_ID} = ?',
+        .query(Constant.KEY_TABLE_PRIORITY,
+        where: '${Constant.KEY_PRIORITY_NAME} = ? AND ${Constant.KEY_PRIORITY_USER_ID} = ?',
         whereArgs: [name, userId]);
 
     return maps.isEmpty;

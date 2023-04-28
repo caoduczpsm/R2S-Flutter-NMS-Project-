@@ -18,7 +18,8 @@ class UserSqlHelper {
   static Future<User?> getUserByEmailPassword(String email, String password) async {
     final db = await AppSQLHelper.db();
     final List<Map<String, dynamic>> maps = await db.query(Constant.KEY_TABLE_USER,
-        where: '${Constant.KEY_USER_EMAIL} = ? AND ${Constant.KEY_USER_PASSWORD} = ?', whereArgs: [email,password]);
+        where: '${Constant.KEY_USER_EMAIL} = ? AND ${Constant.KEY_USER_PASSWORD} = ?',
+        whereArgs: [email,password]);
 
 
     if (maps.isNotEmpty) {
@@ -31,7 +32,8 @@ class UserSqlHelper {
   static Future<User?> getUserById(int id) async {
     final db = await AppSQLHelper.db();
 
-    final maps = await db.query(Constant.KEY_TABLE_USER, where: '${Constant.KEY_USER_ID} = ?', whereArgs: [id]);
+    final maps = await db.query(Constant.KEY_TABLE_USER,
+        where: '${Constant.KEY_USER_ID} = ?', whereArgs: [id]);
 
     if (maps.isNotEmpty) {
       return User.fromMap(maps.first);
@@ -45,7 +47,8 @@ class UserSqlHelper {
   static Future<bool> checkEmailAlreadyUsed(String email) async {
     final db = await AppSQLHelper.db();
     final List<Map<String, dynamic>> maps = await db
-        .query(Constant.KEY_TABLE_USER, where: '${Constant.KEY_USER_EMAIL} = ?', whereArgs: [email]);
+        .query(Constant.KEY_TABLE_USER, where: '${Constant.KEY_USER_EMAIL} = ?',
+        whereArgs: [email]);
 
     if (maps.isEmpty) {
       return true;
@@ -57,7 +60,9 @@ class UserSqlHelper {
   static Future<void> changePassword(String email, String newPassword) async{
     final db = await AppSQLHelper.db();
 
-    await db.update(Constant.KEY_TABLE_USER,  {Constant.KEY_USER_PASSWORD: newPassword}, where: '${Constant.KEY_USER_EMAIL} = ?', whereArgs: [email]);
+    await db.update(Constant.KEY_TABLE_USER,
+        {Constant.KEY_USER_PASSWORD: newPassword},
+        where: '${Constant.KEY_USER_EMAIL} = ?', whereArgs: [email]);
   }
 
 }

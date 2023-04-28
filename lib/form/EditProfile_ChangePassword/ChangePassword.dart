@@ -136,8 +136,10 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
                     ElevatedButton(
                       onPressed:() async {
                         if (_changePasswordForm.currentState!.validate()){
-                          if (user.password == userController.hashPassword(_currentPassword.text.trim())) {
-                              userController.changePassword(user.email!, userController.hashPassword(_password.text.trim()));
+                          if (user.password ==
+                              userController.hashPassword(_currentPassword.text.trim())) {
+                              userController.changePassword(user.email!,
+                                  userController.hashPassword(_password.text.trim()));
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Change Successful!')));
                               setState(() {

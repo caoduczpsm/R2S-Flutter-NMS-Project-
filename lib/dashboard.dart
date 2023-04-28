@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_management_system/form/Category.dart';
+import 'package:note_management_system/form/Priority.dart';
+import 'package:note_management_system/form/Status_Form.dart';
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
 import 'package:note_management_system/form/EditProfile_ChangePassword/ChangePassword.dart';
@@ -104,7 +106,7 @@ class _NoteAppState extends State<NoteApp> {
               leading: const Icon(Icons.low_priority),
               onTap: () {
                 setState(() {
-                  _currentScreen = const ItemDashboard();
+                  _currentScreen = PriorityScreen(user: user);
                 });
                 Navigator.pop(context);
               },
@@ -114,7 +116,7 @@ class _NoteAppState extends State<NoteApp> {
               leading: const Icon(Icons.signal_wifi_statusbar_4_bar),
               onTap: () {
                 setState(() {
-                  _currentScreen = const ItemDashboard();
+                  _currentScreen = StatusScreen(user: user);
                 });
                 Navigator.pop(context);
               },

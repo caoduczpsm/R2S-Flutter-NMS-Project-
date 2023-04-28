@@ -105,7 +105,8 @@ class _MySignInFormState extends State<_MySignInForm> {
                   children: [
                     ElevatedButton(
                       onPressed:() async {
-                        int? userID = await userController.login(_email.text.trim(), _password.text.trim());
+                        int? userID = await userController.login(_email.text.trim(),
+                            _password.text.trim());
                         if (userID != null){
                           final user = await UserSqlHelper.getUserById(userID);
                           if (!mounted) return;
