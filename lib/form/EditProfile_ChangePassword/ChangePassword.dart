@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:note_management_system/item.dart';
 
 import '../../controller/UserController.dart';
 import '../../dashboard.dart';
-import '../../model/User.dart';
+import '/model/User.dart';
 
 
 // ignore: must_be_immutable
