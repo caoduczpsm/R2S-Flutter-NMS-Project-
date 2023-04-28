@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_management_system/form/Category.dart';
+import 'package:note_management_system/form/EditProfile_ChangePassword/EditProfile.dart';
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
 import 'package:note_management_system/form/EditProfile_ChangePassword/ChangePassword.dart';
@@ -129,7 +130,7 @@ class _NoteAppState extends State<NoteApp> {
               title: const Text('Edit Profile'),
               onTap: () {
                 setState(() {
-                  _currentScreen = const ItemDashboard();
+                  _currentScreen = EditProfileForm(user: user,);
                 });
                 Navigator.pop(context);
               },

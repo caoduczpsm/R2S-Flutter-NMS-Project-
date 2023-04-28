@@ -127,7 +127,9 @@ class _MySignUpFormState extends State<_MySignUpForm> {
                     ElevatedButton(
                       onPressed:() async {
                         if (_signUpForm.currentState!.validate()){
-                          if (await userController.register(_email.text.trim(), _password.text.trim())){
+                          if (await userController.register(_email.text.trim(),
+                              _password.text.trim())){
+
                             if (!mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Register Successful')));
@@ -143,7 +145,8 @@ class _MySignUpFormState extends State<_MySignUpForm> {
                     ElevatedButton(
                       onPressed:(){
                         Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) => const SignInForm()));
+                            .push(MaterialPageRoute(builder: (context)
+                        => const SignInForm()));
                       },
                       child: const Text('Sign In'),
                     )

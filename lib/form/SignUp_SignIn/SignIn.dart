@@ -105,12 +105,16 @@ class _MySignInFormState extends State<_MySignInForm> {
                   children: [
                     ElevatedButton(
                       onPressed:() async {
-                        int? userID = await userController.login(_email.text.trim(), _password.text.trim());
+                        int? userID = await userController.login(_email.text.trim(),
+                            _password.text.trim());
+
                         if (userID != null){
                           final user = await UserSqlHelper.getUserById(userID);
+
                           if (!mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Login Successful')));
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -121,8 +125,10 @@ class _MySignInFormState extends State<_MySignInForm> {
                           );
                         } else {
                           if (!mounted) return;
+
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Invalid Email or Password')));
+                              const SnackBar(content: Text('Invalid Email '
+                                  'or Password')));
                         }
                       },
                       child: const Text('Login'),
