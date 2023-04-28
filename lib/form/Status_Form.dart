@@ -62,8 +62,8 @@ class _StatusScreenState extends State<_StatusScreen> {
 
     if(id != null) {
       final existingJournal =
-      _status.firstWhere((element) => element[Constant.KEY_CATEGORY_ID] == id);
-      _textNameController.text = existingJournal[Constant.KEY_CATEGORY_NAME];
+      _status.firstWhere((element) => element[Constant.KEY_STATUS_ID] == id);
+      _textNameController.text = existingJournal[Constant.KEY_STATUS_NAME];
     }
 
     showModalBottomSheet(
@@ -132,7 +132,7 @@ class _StatusScreenState extends State<_StatusScreen> {
     } else {
       if(!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Available Category')));
+          const SnackBar(content: Text('Available Status')));
     }
   }
 
@@ -153,7 +153,7 @@ class _StatusScreenState extends State<_StatusScreen> {
     if(!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Successfully deleted a priority!'),
+      content: Text('Successfully deleted a status!'),
     ));
     _refreshStatus();
   }
