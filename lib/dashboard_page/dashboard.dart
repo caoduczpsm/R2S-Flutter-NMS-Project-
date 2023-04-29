@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD:lib/dashboard.dart
 import 'package:note_management_system/form/Category.dart';
 
 import 'package:note_management_system/form/NoteScreen.dart';
@@ -8,7 +9,18 @@ import 'package:note_management_system/form/EditProfile_ChangePassword/EditProfi
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
 import 'package:note_management_system/form/EditProfile_ChangePassword/ChangePassword.dart';
+<<<<<<< HEAD:lib/dashboard.dart
 import 'package:d_chart/d_chart.dart';
+=======
+=======
+<<<<<<< HEAD:lib/dashboard.dart
+import 'package:note_management_system/item.dart';
+import 'package:note_management_system/model/User.dart';
+import 'package:note_management_system/ultilities/Constant.dart';
+import 'package:pie_chart/pie_chart.dart';
+>>>>>>> 32a1a343a3f74f6415ec07f8e6cf640ab9daae67:lib/dashboard_page/dashboard.dart
+
+>>>>>>> a860b4bbeb6eb5561493ff38a4415a0f7759f8be:lib/dashboard_page/dashboard.dart
 // ignore: must_be_immutable
 class NoteApp extends StatefulWidget {
 
@@ -28,11 +40,20 @@ class _NoteAppState extends State<NoteApp> {
   _NoteAppState({required this.user});
 
   Widget _currentScreen = const ItemDashboard();
+<<<<<<< HEAD:lib/dashboard.dart
   final List<Map<String, dynamic>> data = [
     {'domain': 'Processing', 'measure': 60},
     {'domain': 'Done', 'measure': 20},
     {'domain': 'Pending', 'measure': 20},
   ];
+=======
+  Map<String, double> dataMap = {
+    "Processing": 60,
+    "Done": 20,
+    "Pending": 20,
+
+<<<<<<< HEAD:lib/dashboard.dart
+>>>>>>> a860b4bbeb6eb5561493ff38a4415a0f7759f8be:lib/dashboard_page/dashboard.dart
 
   Color _getColor(String data) {
     switch (data) {
@@ -47,7 +68,33 @@ class _NoteAppState extends State<NoteApp> {
     }
   }
 
+=======
+  };
+=======
+import 'package:note_management_system/dashboard_page/item.dart';
+import 'package:note_management_system/form/SignUp_SignIn/SignIn.dart';
+import 'package:note_management_system/ultilities/Constant.dart';
+class DashboardPage extends StatelessWidget {
+  final dynamic user;
+  const DashboardPage({required this.user}) : super();
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MainPage(),
+    );
+  }
+}
 
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+
+>>>>>>> refs/remotes/origin/dashboard:lib/dashboard_page/dashboard.dart
+>>>>>>> 32a1a343a3f74f6415ec07f8e6cf640ab9daae67:lib/dashboard_page/dashboard.dart
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,12 +106,28 @@ class _NoteAppState extends State<NoteApp> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+<<<<<<< HEAD:lib/dashboard.dart
             DrawerHeader(
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('images/drawer_background.jpg'),
                   fit: BoxFit.cover,
                 ),
+=======
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Colors.green),
+              accountName: const Text('Note Management System'),
+              accountEmail: Text('mail'),
+              currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('images/download.jpg')),
+            ),
+            ListTile(
+              leading: Icon(Icons.camera),
+              title: const Text('Home'),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemDashboard()));
+              },
+>>>>>>> refs/remotes/origin/dashboard:lib/dashboard_page/dashboard.dart
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -102,7 +165,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Note'),
+              title: const Text(' ${Constant.KEY_TABLE_CATEGORY}'),
               leading: const Icon(Icons.note),
               onTap: () {
                 setState(() {
@@ -112,7 +175,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Category'),
+              title: const Text('${Constant.KEY_TABLE_PRIORITY}'),
               leading: const Icon(Icons.category),
               onTap: () {
                 setState(() {
@@ -122,7 +185,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Priority'),
+              title: const Text(' ${Constant.KEY_TABLE_STATUS}'),
               leading: const Icon(Icons.low_priority),
               onTap: () {
                 setState(() {
@@ -132,7 +195,7 @@ class _NoteAppState extends State<NoteApp> {
               },
             ),
             ListTile(
-              title: const Text('Status'),
+              title: const Text(' ${Constant.KEY_TABLE_NOTE}'),
               leading: const Icon(Icons.signal_wifi_statusbar_4_bar),
               onTap: () {
                 setState(() {
@@ -169,6 +232,7 @@ class _NoteAppState extends State<NoteApp> {
           ],
         ),
       ),
+<<<<<<< HEAD:lib/dashboard.dart
       body: Center(
           child: AspectRatio(
             aspectRatio: 1,
@@ -185,6 +249,12 @@ class _NoteAppState extends State<NoteApp> {
               animationDuration: Duration(milliseconds: 500),
             ),
           )),
+=======
+      body:
+      // _currentScreen,
+      PieChart(dataMap: dataMap)
+
+>>>>>>> a860b4bbeb6eb5561493ff38a4415a0f7759f8be:lib/dashboard_page/dashboard.dart
     );
   }
 }
