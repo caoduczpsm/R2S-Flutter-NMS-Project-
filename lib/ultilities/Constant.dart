@@ -74,6 +74,7 @@ class Constant{
   static const KEY_NOTE_PRIORITY_ID = "priorities_id";
   // ignore: constant_identifier_names
   static const KEY_NOTE_USER_ID = "user_id";
+<<<<<<< HEAD
   // ignore: constant_identifier_names
   static const KEY_NOTE_CATEGORY_NAME = "category_name";
   // ignore: constant_identifier_names
@@ -81,3 +82,9 @@ class Constant{
   // ignore: constant_identifier_names
   static const KEY_NOTE_STATUS_NAME = "status_name";
 }
+=======
+  static String getPriority() {
+    return KEY_TABLE_PRIORITY;
+  }
+}
+>>>>>>> 32a1a343a3f74f6415ec07f8e6cf640ab9daae67

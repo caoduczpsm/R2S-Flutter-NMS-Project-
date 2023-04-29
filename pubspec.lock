@@ -41,6 +41,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+<<<<<<< HEAD
   crypto:
     dependency: "direct dev"
     description:
@@ -49,6 +50,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+=======
+>>>>>>> 32a1a343a3f74f6415ec07f8e6cf640ab9daae67
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -83,6 +86,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   intl:
     dependency: "direct main"
     description:
@@ -91,6 +95,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.1"
+=======
+>>>>>>> 32a1a343a3f74f6415ec07f8e6cf640ab9daae67
   js:
     dependency: transitive
     description:
@@ -139,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  pie_chart:
+    dependency: "direct main"
+    description:
+      name: pie_chart
+      sha256: "5dba6d0eb4718e8ed00a9079361cd8947c3f84ac5a5d76f05a27f4ec5e27589e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -216,6 +230,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
+<<<<<<< HEAD
   typed_data:
     dependency: transitive
     description:
@@ -224,6 +239,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+=======
+>>>>>>> 32a1a343a3f74f6415ec07f8e6cf640ab9daae67
   vector_math:
     dependency: transitive
     description:
