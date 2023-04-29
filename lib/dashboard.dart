@@ -8,7 +8,7 @@ import 'package:note_management_system/form/EditProfile_ChangePassword/EditProfi
 import 'package:note_management_system/item.dart';
 import 'package:note_management_system/model/User.dart';
 import 'package:note_management_system/form/EditProfile_ChangePassword/ChangePassword.dart';
-
+import 'package:d_chart/d_chart.dart';
 // ignore: must_be_immutable
 class NoteApp extends StatefulWidget {
 
@@ -28,7 +28,24 @@ class _NoteAppState extends State<NoteApp> {
   _NoteAppState({required this.user});
 
   Widget _currentScreen = const ItemDashboard();
+  final List<Map<String, dynamic>> data = [
+    {'domain': 'Processing', 'measure': 60},
+    {'domain': 'Done', 'measure': 20},
+    {'domain': 'Pending', 'measure': 20},
+  ];
 
+  Color _getColor(String data) {
+    switch (data) {
+      case 'Processing':
+        return Colors.grey;
+      case 'Done':
+        return Colors.blueAccent;
+      case 'Pending':
+        return Colors.red;
+      default:
+        return Colors.white;
+    }
+  }
 
 
   @override
@@ -152,7 +169,22 @@ class _NoteAppState extends State<NoteApp> {
           ],
         ),
       ),
-      body: _currentScreen,
+      body: Center(
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: DChartPie(
+              data: data,
+              fillColor: (pieData, index) => _getColor(pieData['domain']),
+              pieLabel: (pieData, index) =>
+              '${pieData['domain']}  ${pieData['measure']}%',
+              animate: true,
+              strokeWidth: 1,
+              labelColor: Colors.white,
+              labelFontSize: 15,
+              labelPosition: PieLabelPosition.inside,
+              animationDuration: Duration(milliseconds: 500),
+            ),
+          )),
     );
   }
 }
