@@ -554,20 +554,6 @@ class _NoteScreenState extends State<_NoteScreen> {
                                                       ],
                                                     ),
                                                   ),
-                                                  // Container(
-                                                  //   margin: const EdgeInsets.only(top: 5),
-                                                  //   child: Row(
-                                                  //     children: [
-                                                  //       const Icon(Icons.signal_wifi_statusbar_4_bar),
-                                                  //       Container(
-                                                  //         margin: const EdgeInsets.only(left: 5),
-                                                  //         child: Text(
-                                                  //           "Status: ${_notes[index][Constant.KEY_NOTE_STATUS_NAME]}",
-                                                  //           style: textNormalStyle,),
-                                                  //       )
-                                                  //     ],
-                                                  //   ),
-                                                  // ),
                                                   Container(
                                                     margin: const EdgeInsets.only(top: 5),
                                                     child: Row(
