@@ -42,6 +42,12 @@ class Constant{
   static const KEY_STATUS_CREATED_DATE = "created_date";
   // ignore: constant_identifier_names
   static const KEY_STATUS_USER_ID = "user_id";
+  // ignore: constant_identifier_names
+  static const KEY_STATUS_DONE = "Done";
+  // ignore: constant_identifier_names
+  static const KEY_STATUS_PENDING = "Pending";
+  // ignore: constant_identifier_names
+  static const KEY_STATUS_DOING = "Doing";
 
   // Bảng priorities
   // ignore: constant_identifier_names

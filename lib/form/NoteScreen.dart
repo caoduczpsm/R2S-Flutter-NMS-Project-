@@ -64,7 +64,7 @@ class _NoteScreenState extends State<_NoteScreen> {
   }
 
   String _formatCreateDate(DateTime date) {
-    return DateFormat('yyyy-MM-dd - kk:mm:ss').format(date);
+    return DateFormat('yyyy-MM-dd kk:mm:ss').format(date);
   }
 
   Future<void> _refreshData() async {
@@ -286,19 +286,7 @@ class _NoteScreenState extends State<_NoteScreen> {
 
                       if(!mounted) return;
 
-                      if(_textNameController.text != ""){
-                        Note note = Note(
-                            name: _textNameController.text,
-                            planDate: _selectedDate,
-                            categoryId: categoryDropdownValue,
-                            statusId: statusDropdownValue,
-                            priorityId: priorityDropdownValue,
-                            userId: user.id!
-                        );
-                        await NoteSQLHelper.createNote(note);
-                        if(!mounted) return;
-                        _refreshData();
-                      }
+                      _addItem();
                     }
 
                     if(id != null){
@@ -319,34 +307,144 @@ class _NoteScreenState extends State<_NoteScreen> {
     ));
   }
 
-  Future<void> _updateItem(int id) async {
+  void _showConfirmDeleteNoteDialog(int id, int index){
 
-    Note note = Note(
-        id: id,
-        name: _textNameController.text,
-        userId: user.id,
-        categoryId: categoryDropdownValue,
-        priorityId: priorityDropdownValue,
-        statusId: statusDropdownValue,
-        planDate: _selectedDate,
-        createdDate: _formatCreateDate(DateTime.now())
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Xác nhận xóa"),
+          content: Text("Bạn có chắc chắn muốn xóa note "
+              "${_notes[index][Constant.KEY_NOTE_NAME]} này không?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Hủy"),
+            ),
+            TextButton(
+              onPressed: () async {
+
+                Navigator.of(context).pop();
+
+                await NoteSQLHelper.deleteNote(id);
+
+                if(!mounted) return;
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("Xóa note ${_notes[index][Constant.KEY_NOTE_NAME]} "
+                      "thành công"),
+                ));
+              },
+              child: const Text("Xóa"),
+            ),
+          ],
+        );
+      },
     );
-
-    await NoteSQLHelper.updateNote(note);
-
-    _refreshData();
   }
 
-  Future<void> _deleteItem(int id) async {
-    await NoteSQLHelper.deleteNote(id);
+  Future<void> _addItem() async {
+    String message = "";
+    if(_textNameController.text.trim().isNotEmpty){
+      if(_textNameController.text.trim().length < 5){
+        message = "Vui lòng nhập tối thiểu 5 ký tự";
+      } else {
+        Note note = Note(
+            name: _textNameController.text,
+            planDate: _selectedDate,
+            categoryId: categoryDropdownValue,
+            statusId: statusDropdownValue,
+            priorityId: priorityDropdownValue,
+            userId: user.id!
+        );
+        int? id = await NoteSQLHelper.createNote(note);
+
+        if(id == null){
+          message = 'Vui lòng nhập tên khác, tên này đã tồn tại';
+        } else {
+          message = "Tạo note thành công";
+          _refreshData();
+        }
+      }
+    } else {
+      message = 'Vui lòng nhập tên';
+    }
 
     if(!mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Successfully deleted a priority!'),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
     ));
 
-    _refreshData();
+  }
+
+  Future<void> _updateItem(int id) async {
+
+    String message = "";
+
+    if(_textNameController.text.trim().isNotEmpty){
+      if(_textNameController.text.trim().length < 5){
+        message = "Vui lòng nhập tối thiểu 5 ký tự";
+      } else {
+
+        Note note = Note(
+            id: id,
+            name: _textNameController.text,
+            userId: user.id,
+            categoryId: categoryDropdownValue,
+            priorityId: priorityDropdownValue,
+            statusId: statusDropdownValue,
+            planDate: _selectedDate,
+            createdDate: _formatCreateDate(DateTime.now())
+        );
+
+        int? updatedNote = await NoteSQLHelper.updateNote(note);
+
+        if(updatedNote == null){
+          message = 'Vui lòng nhập tên khác, tên này đã tồn tại';
+        } else {
+          message = "Tạo note thành công";
+          _refreshData();
+        }
+      }
+    }
+
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+
+  }
+
+  Future<void> _deleteItem(int id, int index) async {
+
+    var format = DateFormat("dd-MM-yyyy kk:mm:ss");
+    DateTime createdAt = format.parse(_notes[index][Constant.KEY_NOTE_CREATED_DATE]);
+    DateTime now = DateTime.now();
+
+    if(_notes[index][Constant.KEY_NOTE_STATUS_NAME] == Constant.KEY_STATUS_DONE){
+
+      bool canDelete = createdAt.isAfter(now.subtract(const Duration(days: 180))) &&
+          createdAt.isBefore(now);
+
+      if(canDelete){
+        _showConfirmDeleteNoteDialog(id, index);
+        _refreshData();
+      } else {
+        if(!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Không xóa được ${_notes[index][Constant.KEY_NOTE_NAME]} "
+              "vì chưa quá 6 tháng"),
+        ));
+
+      }
+    } else {
+      _showConfirmDeleteNoteDialog(id, index);
+      _refreshData();
+    }
+
   }
 
   static const textNormalStyle = TextStyle(fontSize: 18);
@@ -362,144 +460,172 @@ class _NoteScreenState extends State<_NoteScreen> {
           : ListView.builder(
           itemCount: _notes.length,
           itemBuilder: (context, index) =>
-              Card(
-            child: FittedBox(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    child: Container(
-                        width: 400,
-                        height: 220,
-                        margin: const EdgeInsets.only(left: 5, right: 5),
-                        child: Center(
-                          child: Card(
-                            elevation: 5,
-                            shadowColor: Colors.grey,
-                            shape: const RoundedRectangleBorder(borderRadius:
-                            BorderRadius.all(Radius.circular(10))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        _notes[index][Constant.KEY_NOTE_NAME],
-                                        style: const TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blueAccent
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 5),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.category),
-                                              Container(
-                                                margin: const EdgeInsets.only(left: 5),
-                                                child: Text(
-                                                  "Category: ${_notes[index][Constant.KEY_NOTE_CATEGORY_NAME]}",
-                                                  style: textNormalStyle,
-                                                ),
-                                              )
-                                            ],
+              Container(
+                margin: const EdgeInsets.only(top: 5),
+                child: Card(
+                  color: _notes[index][Constant.KEY_NOTE_STATUS_NAME] == Constant.KEY_STATUS_DONE ?
+                  Colors.green[300]:
+                  _notes[index][Constant.KEY_NOTE_STATUS_NAME] == Constant.KEY_STATUS_PENDING ?
+                  Colors.red[300] :
+                  _notes[index][Constant.KEY_NOTE_STATUS_NAME] == Constant.KEY_STATUS_DOING ?
+                  Colors.yellow[300] : Colors.blue[300],
+                  child: FittedBox(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          child: Container(
+                              width: 400,
+                              height: 190,
+                              margin: const EdgeInsets.only(left: 5, right: 5),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Center(
+                                      child: RotatedBox(
+                                        quarterTurns: 1,
+                                        child: Text(
+                                          _notes[index][Constant.KEY_NOTE_STATUS_NAME],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18
                                           ),
                                         ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 5),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.low_priority),
-                                              Container(
-                                                margin: const EdgeInsets.only(left: 5),
-                                                child: Text(
-                                                  "Priority: ${_notes[index][Constant.KEY_NOTE_PRIORITY_NAME]}",
-                                                  style: textNormalStyle,),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 5),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.signal_wifi_statusbar_4_bar),
-                                              Container(
-                                                margin: const EdgeInsets.only(left: 5),
-                                                child: Text(
-                                                  "Status: ${_notes[index][Constant.KEY_NOTE_STATUS_NAME]}",
-                                                  style: textNormalStyle,),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 5),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.next_plan),
-                                              Container(
-                                                margin: const EdgeInsets.only(left: 5),
-                                                child: Text(
-                                                  "Plan Date: ${_notes[index][Constant.KEY_NOTE_PLAN_DATE]}",
-                                                  style: textNormalStyle,),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 5),
-                                          child: Row(
-                                            children: [
-                                              const Icon(Icons.lock_clock),
-                                              Container(
-                                                margin: const EdgeInsets.only(left: 5),
-                                                child: Text(
-                                                  "Created at: ${_notes[index][Constant.KEY_NOTE_CREATED_DATE]}",
-                                                  style: textNormalStyle,),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
+                                    SizedBox(
+                                      width: 375,
+                                      child: Card(
+                                        elevation: 5,
+                                        shadowColor: Colors.grey,
+                                        shape: const RoundedRectangleBorder(borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    _notes[index][Constant.KEY_NOTE_NAME],
+                                                    style: const TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.blueAccent
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    margin: const EdgeInsets.only(top: 5),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(Icons.category),
+                                                        Container(
+                                                          margin: const EdgeInsets.only(left: 5),
+                                                          child: Text(
+                                                            "Category: ${_notes[index][Constant.KEY_NOTE_CATEGORY_NAME]}",
+                                                            style: textNormalStyle,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: const EdgeInsets.only(top: 5),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(Icons.low_priority),
+                                                        Container(
+                                                          margin: const EdgeInsets.only(left: 5),
+                                                          child: Text(
+                                                            "Priority: ${_notes[index][Constant.KEY_NOTE_PRIORITY_NAME]}",
+                                                            style: textNormalStyle,),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // Container(
+                                                  //   margin: const EdgeInsets.only(top: 5),
+                                                  //   child: Row(
+                                                  //     children: [
+                                                  //       const Icon(Icons.signal_wifi_statusbar_4_bar),
+                                                  //       Container(
+                                                  //         margin: const EdgeInsets.only(left: 5),
+                                                  //         child: Text(
+                                                  //           "Status: ${_notes[index][Constant.KEY_NOTE_STATUS_NAME]}",
+                                                  //           style: textNormalStyle,),
+                                                  //       )
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                  Container(
+                                                    margin: const EdgeInsets.only(top: 5),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(Icons.next_plan),
+                                                        Container(
+                                                          margin: const EdgeInsets.only(left: 5),
+                                                          child: Text(
+                                                            "Plan Date: ${_notes[index][Constant.KEY_NOTE_PLAN_DATE]}",
+                                                            style: textNormalStyle,),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: const EdgeInsets.only(top: 5),
+                                                    child: Row(
+                                                      children: [
+                                                        const Icon(Icons.lock_clock),
+                                                        Container(
+                                                          margin: const EdgeInsets.only(left: 5),
+                                                          child: Text(
+                                                            "Created at: ${_notes[index][Constant.KEY_NOTE_CREATED_DATE]}",
+                                                            style: textNormalStyle,),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
                           ),
-                        )
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () => _showForm(_notes[index][Constant.KEY_NOTE_ID]),
+                                icon: const Icon(Icons.edit, color: Colors.black,)
+                            ),
+                            IconButton(
+                                onPressed: () => _deleteItem(_notes[index][Constant.KEY_NOTE_ID], index),
+                                icon: const Icon(Icons.delete, color: Colors.black,)
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                          onPressed: () => _showForm(_notes[index][Constant.KEY_NOTE_ID]),
-                          icon: const Icon(Icons.edit, color: Colors.orange,)
-                      ),
-                      IconButton(
-                          onPressed: () => _deleteItem(_notes[index][Constant.KEY_NOTE_ID]),
-                          icon: const Icon(Icons.delete, color: Colors.red,)
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
+                ),
+              )
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

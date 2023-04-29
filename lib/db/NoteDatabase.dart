@@ -7,22 +7,28 @@ import 'AppSQLHelper.dart';
 
 class NoteSQLHelper {
 
-  static Future<int> createNote(Note note) async {
+  static Future<int?> createNote(Note note) async {
     final db = await AppSQLHelper.db();
 
-    int id = await db.insert(Constant.KEY_TABLE_NOTE, note.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    return id;
+    if(await checkNoteAvailableByNameAndUserID(note.name!, note.userId!)){
+      return  await db.insert(Constant.KEY_TABLE_NOTE, note.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    } else {
+      return null;
+    }
+
   }
 
-  static Future<int> updateNote(Note note) async {
+  static Future<int?> updateNote(Note note) async {
     final db = await AppSQLHelper.db();
 
-    final result = await db
-        .update(Constant.KEY_TABLE_NOTE, note.toMap(), where: "id = ?"
-        , whereArgs: [note.id]);
-
-    return result;
+    if(await checkNoteAvailableByNameAndUserID(note.name!, note.userId!)){
+      return await db
+          .update(Constant.KEY_TABLE_NOTE, note.toMap(), where: "id = ?",
+          whereArgs: [note.id]);
+    } else {
+      return null;
+    }
   }
 
   static Future<void> deleteNote(int id) async {
@@ -61,6 +67,16 @@ class NoteSQLHelper {
     ''', [id]);
 
     return maps;
+  }
+
+  static Future<bool> checkNoteAvailableByNameAndUserID(String name, int userId) async {
+    final db = await AppSQLHelper.db();
+    final List<Map<String, dynamic>> maps = await db
+        .query(Constant.KEY_TABLE_NOTE,
+        where: '${Constant.KEY_NOTE_NAME} = ? AND ${Constant.KEY_NOTE_USER_ID} = ?',
+        whereArgs: [name, userId]);
+
+    return maps.isEmpty;
   }
 
 
