@@ -15,4 +15,13 @@ class Status {
       Constant.KEY_STATUS_USER_ID : userId,
     };
   }
+
+  static Status fromMap(Map<String, dynamic> map) {
+    return Status(
+      id: map[Constant.KEY_STATUS_ID],
+      name: map[Constant.KEY_STATUS_NAME],
+      createdAt: map[Constant.KEY_STATUS_CREATED_DATE],
+      userId: map[Constant.KEY_STATUS_USER_ID],
+    );
+  }
 }

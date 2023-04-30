@@ -15,4 +15,13 @@ class Priorities {
       Constant.KEY_PRIORITY_USER_ID : userId,
     };
   }
+
+  static Priorities fromMap(Map<String, dynamic> map) {
+    return Priorities(
+      id: map[Constant.KEY_PRIORITY_ID],
+      name: map[Constant.KEY_PRIORITY_NAME],
+      createdAt: map[Constant.KEY_PRIORITY_CREATED_DATE],
+      userId: map[Constant.KEY_PRIORITY_USER_ID],
+    );
+  }
 }

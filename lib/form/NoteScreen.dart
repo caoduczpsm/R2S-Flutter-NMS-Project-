@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/db/StatusHelper.dart';
+import 'package:note_management_system/model/Categories.dart';
+import 'package:note_management_system/model/Priorities.dart';
+import 'package:note_management_system/model/Status.dart';
 
 import '../db/CategoryHelper.dart';
 import '../db/NoteDatabase.dart';
@@ -83,7 +86,7 @@ class _NoteScreenState extends State<_NoteScreen> {
 
   final TextEditingController _textNameController = TextEditingController();
 
-  void _showForm(int? id) async {
+  void _showForm(int? id, int? index) async {
 
 
     if(id != null) {
@@ -290,7 +293,7 @@ class _NoteScreenState extends State<_NoteScreen> {
                     }
 
                     if(id != null){
-                      await _updateItem(id);
+                      await _updateItem(id, index!);
                       _refreshData();
                     }
 
@@ -379,9 +382,12 @@ class _NoteScreenState extends State<_NoteScreen> {
 
   }
 
-  Future<void> _updateItem(int id) async {
+  Future<void> _updateItem(int id, int index) async {
 
     String message = "";
+    Categories? categories = await CategoryHelper.getItemsById(categoryDropdownValue);
+    Status? status = await StatusHelper.getItemsById(statusDropdownValue);
+    Priorities? priorities = await PriorityHelper.getItemsById(priorityDropdownValue);
 
     if(_textNameController.text.trim().isNotEmpty){
       if(_textNameController.text.trim().length < 5){
@@ -399,13 +405,20 @@ class _NoteScreenState extends State<_NoteScreen> {
             createdDate: _formatCreateDate(DateTime.now())
         );
 
-        int? updatedNote = await NoteSQLHelper.updateNote(note);
-
-        if(updatedNote == null){
-          message = 'Vui lòng nhập tên khác, tên này đã tồn tại';
+        if(categories?.name != _notes[index][Constant.KEY_NOTE_CATEGORY_NAME] ||
+            priorities?.name != _notes[index][Constant.KEY_NOTE_PRIORITY_NAME] ||
+            status?.name != _notes[index][Constant.KEY_NOTE_STATUS_NAME] ||
+            _selectedDate != _notes[index][Constant.KEY_NOTE_PLAN_DATE]) {
+          await NoteSQLHelper.updateNote(note, true);
+          message = "$categoryDropdownValue";
         } else {
-          message = "Tạo note thành công";
-          _refreshData();
+          int? updatedNote = await NoteSQLHelper.updateNote(note, false);
+          if(updatedNote == null){
+            message = 'Vui lòng nhập tên khác, tên này đã tồn tại';
+          } else {
+            message = "Cập nhật thông tin note thành công";
+            _refreshData();
+          }
         }
       }
     }
@@ -468,7 +481,7 @@ class _NoteScreenState extends State<_NoteScreen> {
                   _notes[index][Constant.KEY_NOTE_STATUS_NAME] == Constant.KEY_STATUS_PENDING ?
                   Colors.red[300] :
                   _notes[index][Constant.KEY_NOTE_STATUS_NAME] == Constant.KEY_STATUS_DOING ?
-                  Colors.yellow[300] : Colors.blue[300],
+                  Colors.yellow[300] : Colors.white,
                   child: FittedBox(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -598,7 +611,7 @@ class _NoteScreenState extends State<_NoteScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                                onPressed: () => _showForm(_notes[index][Constant.KEY_NOTE_ID]),
+                                onPressed: () => _showForm(_notes[index][Constant.KEY_NOTE_ID], index),
                                 icon: const Icon(Icons.edit, color: Colors.black,)
                             ),
                             IconButton(
@@ -615,7 +628,7 @@ class _NoteScreenState extends State<_NoteScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => _showForm(null),
+        onPressed: () => _showForm(null, null),
       ),
     );
   }

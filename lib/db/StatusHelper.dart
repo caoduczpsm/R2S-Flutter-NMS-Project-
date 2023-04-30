@@ -26,6 +26,19 @@ class StatusHelper {
         where: "${Constant.KEY_STATUS_USER_ID} = ?", whereArgs: [userId]);
   }
 
+  static Future<Status?> getItemsById(int id) async {
+    final db = await AppSQLHelper.db();
+
+    final maps = await db.query(Constant.KEY_TABLE_STATUS,
+        where: '${Constant.KEY_STATUS_ID} = ?', whereArgs: [id]);
+
+    if (maps.isNotEmpty) {
+      return Status.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
+
   static Future<int> updateItem(Status status) async {
     final db = await AppSQLHelper.db();
     final result = await db.update(Constant.KEY_TABLE_STATUS, status.toMap(),

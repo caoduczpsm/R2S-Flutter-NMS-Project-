@@ -19,16 +19,23 @@ class NoteSQLHelper {
 
   }
 
-  static Future<int?> updateNote(Note note) async {
+  static Future<int?> updateNote(Note note, bool isUpdateNotName) async {
     final db = await AppSQLHelper.db();
 
-    if(await checkNoteAvailableByNameAndUserID(note.name!, note.userId!)){
+    if(isUpdateNotName){
       return await db
           .update(Constant.KEY_TABLE_NOTE, note.toMap(), where: "id = ?",
           whereArgs: [note.id]);
     } else {
-      return null;
+      if(await checkNoteAvailableByNameAndUserID(note.name!, note.userId!)){
+        return await db
+            .update(Constant.KEY_TABLE_NOTE, note.toMap(), where: "id = ?",
+            whereArgs: [note.id]);
+      } else {
+        return null;
+      }
     }
+
   }
 
   static Future<void> deleteNote(int id) async {

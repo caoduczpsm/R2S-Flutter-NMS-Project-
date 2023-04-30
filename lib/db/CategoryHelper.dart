@@ -25,18 +25,18 @@ class CategoryHelper {
         where: "${Constant.KEY_CATEGORY_USER_ID} = ?", whereArgs: [userId]);
   }
 
-  // static Future<List<Categories>> getItemsByUserId(int userId) async {
-  //   final db = await AppSQLHelper.db();
-  //   final List<Map<String, dynamic>> maps = await db.query(Constant.KEY_TABLE_CATEGORY,
-  //     where: '${Constant.KEY_CATEGORY_USER_ID} = ?', whereArgs: [Constant.KEY_USER_ID],);
-  //   return List.generate(maps.length, (i) {
-  //     return Categories(
-  //       id: maps[i][Constant.KEY_CATEGORY_ID],
-  //       title: maps[i][Constant.KEY_CATEGORY_NAME],
-  //       createdAt: maps[i][Constant.KEY_CATEGORY_CREATED_DATE],
-  //     );
-  //   });
-  // }
+  static Future<Categories?> getItemsById(int id) async {
+    final db = await AppSQLHelper.db();
+
+    final maps = await db.query(Constant.KEY_TABLE_CATEGORY,
+        where: '${Constant.KEY_CATEGORY_ID} = ?', whereArgs: [id]);
+
+    if (maps.isNotEmpty) {
+      return Categories.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
 
   static Future<int> updateItem(Categories categories) async {
     final db = await AppSQLHelper.db();
