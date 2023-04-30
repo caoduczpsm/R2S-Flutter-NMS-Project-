@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 import '../../controller/UserController.dart';
-import '../../dashboard.dart';
-import '../../model/User.dart';
-
-
+import 'package:note_management_system/model/User.dart';
+import 'package:note_management_system/dashboard_page/dashboard.dart';
 // ignore: must_be_immutable
 class ChangePasswordForm extends StatelessWidget {
   User user;

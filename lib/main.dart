@@ -1,11 +1,13 @@
-<<<<<<< HEAD
 
-import 'package:flutter/material.dart';
-=======
-//import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:note_management_system/dashboard_page/dashboard.dart';
->>>>>>> refs/remotes/origin/dashboard
+import 'package:note_management_system/form/Category.dart';
+import 'package:note_management_system/model/User.dart';
+import 'dashboard_page/dashboard.dart';
+import 'dashboard_page/item.dart';
 import 'package:note_management_system/form/SignUp_SignIn/SignIn.dart';
 
 void main() {
@@ -26,8 +28,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-<<<<<<< HEAD
-=======
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -92,4 +93,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
->>>>>>> refs/remotes/origin/dashboard
+

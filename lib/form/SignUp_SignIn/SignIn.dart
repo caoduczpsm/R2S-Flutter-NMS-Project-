@@ -2,11 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:note_management_system/controller/UserController.dart';
-<<<<<<< HEAD
-import 'package:note_management_system/dashboard.dart';
-=======
 import 'package:note_management_system/dashboard_page/dashboard.dart';
->>>>>>> refs/remotes/origin/dashboard
 import 'package:note_management_system/db/UserDatabase.dart';
 import 'package:note_management_system/form/SignUp_SignIn/SignUp.dart';
 import 'package:note_management_system/model/User.dart';
@@ -123,11 +119,7 @@ class _MySignInFormState extends State<_MySignInForm> {
                             MaterialPageRoute(
                               // Cái này chuyển đến dashboard khi login thành công
                               // Có thể thêm tham số userID khi chuyển trang để xử lý những dữ liệu khác khi cần user ID
-<<<<<<< HEAD
                               builder: (context) => NoteApp( user : user as User), // Ở đây
-=======
-                              builder: (context) => DashboardPage( user : user,), // Ở đây
->>>>>>> refs/remotes/origin/dashboard
                             ),
                           );
                         } else {
@@ -165,6 +157,5 @@ class _MySignInFormState extends State<_MySignInForm> {
     );
   }
 }
-
 
 
