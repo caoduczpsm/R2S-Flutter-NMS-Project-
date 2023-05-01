@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import '../../controller/UserController.dart';
-import '../../dashboard.dart';
-import '../../model/User.dart';
+import 'package:note_management_system/model/User.dart';
 
-
+import '../dashboard_page/dashboard.dart';
 // ignore: must_be_immutable
 class ChangePasswordForm extends StatelessWidget {
   User user;
@@ -166,7 +164,7 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
                       onPressed:(){
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context)
-                        => NoteApp(user: user)));
+                        => NoteManagementApp(user: user)));
                       },
                       child: const Text('Home'),
                     )

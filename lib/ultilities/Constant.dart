@@ -87,3 +87,4 @@ class Constant{
   // ignore: constant_identifier_names
   static const KEY_NOTE_STATUS_NAME = "status_name";
 }
+

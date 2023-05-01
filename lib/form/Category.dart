@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/CategoryHelper.dart';
 import 'package:note_management_system/model/Categories.dart';
-
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
 
 // ignore: must_be_immutable
 class CategoryScreen extends StatelessWidget {
+  static const String routeName='/form/Category';
+  User user = User();
 
-  User user;
-
-  CategoryScreen({super.key, required this.user});
+  CategoryScreen({super. key, required this.user});
 
   @override
   Widget build(BuildContext context) {
