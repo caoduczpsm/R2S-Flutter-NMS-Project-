@@ -4,13 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/db/StatusHelper.dart';
-<<<<<<< HEAD
 import 'package:note_management_system/model/Categories.dart';
 import 'package:note_management_system/model/Priorities.dart';
 import 'package:note_management_system/model/Status.dart';
-
-=======
->>>>>>> dashboard
 import '../db/CategoryHelper.dart';
 import '../db/NoteDatabase.dart';
 import '../model/Note.dart';
