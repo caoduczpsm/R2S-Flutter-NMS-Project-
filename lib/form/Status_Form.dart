@@ -119,11 +119,9 @@ class _StatusScreenState extends State<_StatusScreen> {
   }
 
   Future<void> _addItem() async{
-    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
     int? id = await StatusHelper.createItem(Status(
         name: _textNameController.text,
-        userId: user.id,
-        createdAt: dateFormat
+        userId: user.id
     ));
     if(id != null){
       _refreshStatus();
@@ -135,12 +133,10 @@ class _StatusScreenState extends State<_StatusScreen> {
   }
 
   Future<void> _updateItem(int id) async {
-    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
     await StatusHelper.updateItem(Status(
         id: id,
         name: _textNameController.text,
         userId: user.id,
-        createdAt: dateFormat
     ));
     _refreshStatus();
   }

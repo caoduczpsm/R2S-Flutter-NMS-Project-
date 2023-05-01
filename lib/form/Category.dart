@@ -119,11 +119,9 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   }
 
   Future<void> _addItem() async{
-    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
     int? id = await CategoryHelper.createItem(Categories(
         name: _textNameController.text,
         userId: user.id,
-        createdAt: dateFormat
     ));
     if(id != null){
       _refreshCategories();
@@ -135,12 +133,10 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   }
 
   Future<void> _updateItem(int id) async {
-    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
     await CategoryHelper.updateItem(Categories(
         id: id,
         name: _textNameController.text,
         userId: user.id,
-        createdAt: dateFormat
     ));
     _refreshCategories();
   }

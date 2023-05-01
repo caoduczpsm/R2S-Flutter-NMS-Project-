@@ -11,7 +11,6 @@ class Status {
     return {
       Constant.KEY_STATUS_ID : id,
       Constant.KEY_STATUS_NAME : name,
-      Constant.KEY_STATUS_CREATED_DATE : createdAt,
       Constant.KEY_STATUS_USER_ID : userId,
     };
   }

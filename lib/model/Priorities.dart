@@ -11,7 +11,6 @@ class Priorities {
     return {
       Constant.KEY_PRIORITY_ID : id,
       Constant.KEY_PRIORITY_NAME : name,
-      Constant.KEY_PRIORITY_CREATED_DATE : createdAt,
       Constant.KEY_PRIORITY_USER_ID : userId,
     };
   }

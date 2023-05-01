@@ -11,7 +11,6 @@ class Categories {
     return {
       Constant.KEY_CATEGORY_ID : id,
       Constant.KEY_CATEGORY_NAME : name,
-      Constant.KEY_CATEGORY_CREATED_DATE : createdAt,
       Constant.KEY_CATEGORY_USER_ID : userId,
     };
   }

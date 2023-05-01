@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/db/StatusHelper.dart';
-import 'package:note_management_system/model/Categories.dart';
-import 'package:note_management_system/model/Priorities.dart';
-import 'package:note_management_system/model/Status.dart';
 import '../db/CategoryHelper.dart';
 import '../db/NoteDatabase.dart';
 import '../model/Note.dart';
@@ -65,9 +62,9 @@ class _NoteScreenState extends State<_NoteScreen> {
     return DateFormat('dd/MM/yyyy').format(date);
   }
 
-  String _formatCreateDate(DateTime date) {
-    return DateFormat('yyyy-MM-dd kk:mm:ss').format(date);
-  }
+  // String _formatCreateDate(DateTime date) {
+  //   return DateFormat('yyyy-MM-dd kk:mm:ss').format(date);
+  // }
 
   Future<void> _refreshData() async {
     final data = await NoteSQLHelper.getNoteDetailById(user.id!);
@@ -86,7 +83,6 @@ class _NoteScreenState extends State<_NoteScreen> {
   final TextEditingController _textNameController = TextEditingController();
 
   void _showForm(int? id, int? index) async {
-
 
     if(id != null) {
       final existingNote =
@@ -333,11 +329,7 @@ class _NoteScreenState extends State<_NoteScreen> {
                 await NoteSQLHelper.deleteNote(id);
 
                 if(!mounted) return;
-
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Xóa note ${_notes[index][Constant.KEY_NOTE_NAME]} "
-                      "thành công"),
-                ));
+                _refreshData();
               },
               child: const Text("Xóa"),
             ),
@@ -348,10 +340,18 @@ class _NoteScreenState extends State<_NoteScreen> {
   }
 
   Future<void> _addItem() async {
+
     String message = "";
+    var format = DateFormat("dd/MM/yyyy");
+    DateTime date = format.parse(_selectedDate);
+    DateTime now = DateTime.now();
+    bool canCreate = date.isAfter(now.subtract(const Duration(days: 1)));
+
     if(_textNameController.text.trim().isNotEmpty){
       if(_textNameController.text.trim().length < 5){
         message = "Vui lòng nhập tối thiểu 5 ký tự";
+      } else if(!canCreate) {
+        message = "Vui lòng chọn ngày hoàn thành bắt đầu từ ngày hiện tại";
       } else {
         Note note = Note(
             name: _textNameController.text,
@@ -384,15 +384,17 @@ class _NoteScreenState extends State<_NoteScreen> {
   Future<void> _updateItem(int id, int index) async {
 
     String message = "";
-    Categories? categories = await CategoryHelper.getItemsById(categoryDropdownValue);
-    Status? status = await StatusHelper.getItemsById(statusDropdownValue);
-    Priorities? priorities = await PriorityHelper.getItemsById(priorityDropdownValue);
+    var format = DateFormat("dd/MM/yyyy");
+    DateTime date = format.parse(_selectedDate);
+    DateTime now = DateTime.now();
+    bool canUpdate = date.isAfter(now.subtract(const Duration(days: 1)));
 
     if(_textNameController.text.trim().isNotEmpty){
       if(_textNameController.text.trim().length < 5){
         message = "Vui lòng nhập tối thiểu 5 ký tự";
+      } else if(!canUpdate) {
+        message = "Vui lòng chọn ngày hoàn thành bắt đầu từ ngày hiện tại";
       } else {
-
         Note note = Note(
             id: id,
             name: _textNameController.text,
@@ -401,15 +403,15 @@ class _NoteScreenState extends State<_NoteScreen> {
             priorityId: priorityDropdownValue,
             statusId: statusDropdownValue,
             planDate: _selectedDate,
-            createdDate: _formatCreateDate(DateTime.now())
         );
 
-        if(categories?.name != _notes[index][Constant.KEY_NOTE_CATEGORY_NAME] ||
-            priorities?.name != _notes[index][Constant.KEY_NOTE_PRIORITY_NAME] ||
-            status?.name != _notes[index][Constant.KEY_NOTE_STATUS_NAME] ||
-            _selectedDate != _notes[index][Constant.KEY_NOTE_PLAN_DATE]) {
+        if((categoryDropdownValue != _notes[index][Constant.KEY_NOTE_CATEGORY_ID] ||
+            priorityDropdownValue != _notes[index][Constant.KEY_NOTE_PRIORITY_ID] ||
+            statusDropdownValue != _notes[index][Constant.KEY_NOTE_STATUS_ID] ||
+            _selectedDate != _notes[index][Constant.KEY_NOTE_PLAN_DATE]) &&
+            _textNameController.text == _notes[index][Constant.KEY_NOTE_NAME]) {
           await NoteSQLHelper.updateNote(note, true);
-          message = "$categoryDropdownValue";
+          message = "Cập nhật thông tin note thành công";
         } else {
           int? updatedNote = await NoteSQLHelper.updateNote(note, false);
           if(updatedNote == null){
@@ -431,14 +433,14 @@ class _NoteScreenState extends State<_NoteScreen> {
 
   Future<void> _deleteItem(int id, int index) async {
 
-    var format = DateFormat("dd-MM-yyyy kk:mm:ss");
-    DateTime createdAt = format.parse(_notes[index][Constant.KEY_NOTE_CREATED_DATE]);
+    var format = DateFormat("dd/MM/yyyy");
+    DateTime completedDate = format.parse(_notes[index][Constant.KEY_NOTE_PLAN_DATE]);
     DateTime now = DateTime.now();
 
     if(_notes[index][Constant.KEY_NOTE_STATUS_NAME] == Constant.KEY_STATUS_DONE){
 
-      bool canDelete = createdAt.isAfter(now.subtract(const Duration(days: 180))) &&
-          createdAt.isBefore(now);
+      bool canDelete = completedDate.isAfter(now.subtract(const Duration(days: 180))) &&
+          completedDate.isBefore(now);
 
       if(canDelete){
         _showConfirmDeleteNoteDialog(id, index);

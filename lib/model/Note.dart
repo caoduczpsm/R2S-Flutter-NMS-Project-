@@ -22,8 +22,7 @@ class Note {
       Constant.KEY_NOTE_CATEGORY_ID : categoryId,
       Constant.KEY_NOTE_STATUS_ID : statusId,
       Constant.KEY_NOTE_PRIORITY_ID : priorityId,
-      Constant.KEY_NOTE_USER_ID : userId,
-      Constant.KEY_NOTE_CREATED_DATE: createdDate
+      Constant.KEY_NOTE_USER_ID : userId
     };
   }
 
