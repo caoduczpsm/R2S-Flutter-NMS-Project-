@@ -10,12 +10,30 @@ import 'package:note_management_system/model/User.dart';
 import 'package:note_management_system/form/EditProfile_ChangePassword/ChangePassword.dart';
 import 'package:note_management_system/form/Category.dart';
 import 'package:d_chart/d_chart.dart';
+import 'package:note_management_system/ultilities/page_routes.dart';
 // ignore: must_be_immutable
-class NoteApp extends StatefulWidget {
-static const String routeName='/dashboard_page/dashboard';
+class DashboardPage extends StatelessWidget {
+  DashboardPage({super. key, required this.user});
+  static const String routeName='/dashboard_page/dashboard';
   User user;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: {
+        pageRoutes.categoty: (context) => CategoryScreen(user: user),
+        pageRoutes.priority: (context) => PriorityScreen(user: user),
+        pageRoutes.note: (context) => NoteScreen(user: user),
+        pageRoutes.status: (context)=> StatusScreen(user: user),
+    },
+        home: NoteApp(user: user),
+    );
+  }
+}
 
-  NoteApp({super.key, required this.user});
+class NoteApp extends StatefulWidget {
+User user;
+
+  NoteApp({super.key, required this. user});
 
   @override
   // ignore: no_logic_in_create_state
@@ -110,42 +128,26 @@ class _NoteAppState extends State<NoteApp> {
             ListTile(
               title: const Text(' ${Constant.KEY_TABLE_CATEGORY}'),
               leading: const Icon(Icons.note),
-              onTap: () {
-                setState(() {
-                  _currentScreen = const ItemDashboard();
-                });
-                Navigator.pop(context);
-              },
+              onTap: () =>
+                Navigator.pushReplacementNamed(context, pageRoutes.categoty),
             ),
             ListTile(
               title: const Text('${Constant.KEY_TABLE_PRIORITY}'),
               leading: const Icon(Icons.category),
-              onTap: () {
-                setState(() {
-                  _currentScreen = CategoryScreen(user: user);
-                });
-                Navigator.pop(context);
-              },
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, pageRoutes.priority),
             ),
             ListTile(
               title: const Text(' ${Constant.KEY_TABLE_STATUS}'),
               leading: const Icon(Icons.low_priority),
-              onTap: () {
-                setState(() {
-                  _currentScreen = PriorityScreen(user: user);
-                });
-                Navigator.pop(context);
-              },
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, pageRoutes.status),
             ),
             ListTile(
               title: const Text(' ${Constant.KEY_TABLE_NOTE}'),
               leading: const Icon(Icons.signal_wifi_statusbar_4_bar),
-              onTap: () {
-                setState(() {
-                  _currentScreen = StatusScreen(user: user);
-                });
-                Navigator.pop(context);
-              },
+              onTap: () =>
+                  Navigator.pushReplacementNamed(context, pageRoutes.note),
             ),
             const Divider(color: Colors.black),
             Container(

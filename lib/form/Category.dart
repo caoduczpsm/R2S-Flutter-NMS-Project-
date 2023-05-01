@@ -4,6 +4,7 @@ import 'package:note_management_system/db/CategoryHelper.dart';
 import 'package:note_management_system/model/Categories.dart';
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
+import 'package:note_management_system/dashboard_page/dashboard.dart';
 
 // ignore: must_be_immutable
 class CategoryScreen extends StatelessWidget {
@@ -159,6 +160,14 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
+        title: Text('Category'),
+        leading: BackButton(
+            color: Colors.white,
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteApp(user: user)))
+        ),
+      ),
       body: _isLoading
           ? const Center(
         child: CircularProgressIndicator(),

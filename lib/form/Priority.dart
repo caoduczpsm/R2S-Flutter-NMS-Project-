@@ -1,22 +1,34 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:note_management_system/dashboard_page/dashboard.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/model/Categories.dart';
 import 'package:note_management_system/model/Priorities.dart';
+import 'package:note_management_system/ultilities/page_routes.dart';
 
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
 
 // ignore: must_be_immutable
 class PriorityScreen extends StatelessWidget {
-
+static const String routeName= '/form/Priority';
   User user;
 
   PriorityScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _PriorityScreen(user: user));
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
+        title: Text('Priority'),
+        leading: BackButton(
+            color: Colors.white,
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteApp(user: user)))
+        ),
+      ),
+        body: _PriorityScreen(user: user));
   }
 }
 

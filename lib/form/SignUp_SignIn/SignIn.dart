@@ -1,17 +1,20 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:note_management_system/controller/UserController.dart';
 import 'package:note_management_system/dashboard_page/dashboard.dart';
+import 'package:note_management_system/dashboard_page/item.dart';
 import 'package:note_management_system/db/UserDatabase.dart';
+import 'package:note_management_system/form/Category.dart';
 import 'package:note_management_system/form/SignUp_SignIn/SignUp.dart';
 import 'package:note_management_system/model/User.dart';
+import 'package:note_management_system/ultilities/page_routes.dart';
 
 void main() => runApp(const SignInForm());
 
 class SignInForm extends StatelessWidget {
   const SignInForm({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -119,7 +122,7 @@ class _MySignInFormState extends State<_MySignInForm> {
                             MaterialPageRoute(
                               // Cái này chuyển đến dashboard khi login thành công
                               // Có thể thêm tham số userID khi chuyển trang để xử lý những dữ liệu khác khi cần user ID
-                              builder: (context) => NoteApp( user : user as User), // Ở đây
+                              builder: (context) => DashboardPage(user: user as User), // Ở đây
                             ),
                           );
                         } else {
