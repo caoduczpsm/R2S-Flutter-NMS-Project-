@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/db/StatusHelper.dart';
-
 import '../db/CategoryHelper.dart';
 import '../db/NoteDatabase.dart';
 import '../model/Note.dart';
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
-import 'package:note_management_system/dashboard_page/dashboard.dart';
 
 // ignore: must_be_immutable
 class NoteScreen extends StatelessWidget {
@@ -356,14 +354,6 @@ class _NoteScreenState extends State<_NoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        title: Text('Note'),
-        leading: BackButton(
-            color: Colors.white,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteApp(user: user)))
-        ),
-      ),
       body: _isLoading
           ? const Center(
         child: CircularProgressIndicator(),

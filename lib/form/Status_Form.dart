@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/StatusHelper.dart';
-import 'package:note_management_system/model/Categories.dart';
 import 'package:note_management_system/model/Status.dart';
-import 'package:note_management_system/form/Status_Form.dart';
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
-import 'package:note_management_system/dashboard_page/dashboard.dart';
 
 // ignore: must_be_immutable
 class StatusScreen extends StatelessWidget {
@@ -162,14 +159,6 @@ class _StatusScreenState extends State<_StatusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        title: Text('Status'),
-        leading: BackButton(
-            color: Colors.white,
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteApp(user: user)))
-        ),
-      ),
       body: _isLoading
           ? const Center(
         child: CircularProgressIndicator(),

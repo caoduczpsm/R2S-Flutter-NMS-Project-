@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../controller/UserController.dart';
 import '../../model/User.dart';
-import 'package:note_management_system/dashboard_page/dashboard.dart';
+
+import '../dashboard_page/dashboard.dart';
 
 
 // ignore: must_be_immutable
@@ -158,7 +159,7 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
 
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context)
-                        => NoteApp(user: user)));
+                        => NoteManagementApp(user: user)));
 
                       },
                       child: const Text('Home'),
