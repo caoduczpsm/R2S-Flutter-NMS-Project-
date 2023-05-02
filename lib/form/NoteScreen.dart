@@ -612,7 +612,15 @@ class _NoteScreenState extends State<_NoteScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                                onPressed: () => _showForm(_notes[index][Constant.KEY_NOTE_ID], index),
+                                onPressed: () => {
+                                    if(_categories.isNotEmpty && _statuses.isNotEmpty && _priorities.isNotEmpty) {
+                                      _showForm(_notes[index][Constant.KEY_NOTE_ID], index)
+                                    } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                        content: Text("Bạn chưa tạo category hoặc status hoặc priority"),
+                                        ))
+                                    }
+                                  },
                                 icon: const Icon(Icons.edit, color: Colors.black,)
                             ),
                             IconButton(
@@ -629,7 +637,15 @@ class _NoteScreenState extends State<_NoteScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => _showForm(null, null),
+        onPressed: () => {
+          if (_categories.isNotEmpty && _statuses.isNotEmpty && _priorities.isNotEmpty){
+            _showForm(null, null)
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Bạn chưa tạo category hoặc status hoặc priority"),
+            ))
+          }
+        }
       ),
     );
   }
