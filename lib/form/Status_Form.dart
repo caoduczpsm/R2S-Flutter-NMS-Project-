@@ -172,11 +172,9 @@ class _StatusScreenState extends State<_StatusScreen> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
-
   }
 
   Future<void> _updateItem(int id) async {
-
     String message = '';
     if (_textNameController.text.isNotEmpty) {
       if (_textNameController.text.length < 5) {
@@ -207,11 +205,9 @@ class _StatusScreenState extends State<_StatusScreen> {
     if (result == null) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-            'Can not delete this '
-                '${_status[index][Constant.KEY_STATUS_NAME]} '
-                'because there is a note'
-        ),
+        content: Text('Can not delete this '
+            '${_status[index][Constant.KEY_STATUS_NAME]} '
+            'because there is a note'),
       ));
     } else {
       _showFormDelete(id, index);
@@ -225,36 +221,47 @@ class _StatusScreenState extends State<_StatusScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: _status.length,
-              itemBuilder: (context, index) => Card(
-                color: Colors.blueGrey[200],
-                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                child: ListTile(
-                  title:
-                      Text('Name: ${_status[index][Constant.KEY_STATUS_NAME]}'),
-                  subtitle: Text(
-                      'Created At: ${_status[index][Constant.KEY_STATUS_CREATED_DATE]}'),
-                  trailing: SizedBox(
-                    width: 100,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () =>
-                              _showForm(_status[index][Constant.KEY_STATUS_ID]),
-                          icon: const Icon(Icons.edit),
+          : _status.isEmpty
+              ? const Center(
+                  child: Text(
+                    "Chưa tạo status",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Colors.blue),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _status.length,
+                  itemBuilder: (context, index) => Card(
+                    color: Colors.blueGrey[200],
+                    margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                    child: ListTile(
+                      title: Text(
+                          'Name: ${_status[index][Constant.KEY_STATUS_NAME]}'),
+                      subtitle: Text(
+                          'Created At: ${_status[index][Constant.KEY_STATUS_CREATED_DATE]}'),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => _showForm(
+                                  _status[index][Constant.KEY_STATUS_ID]),
+                              icon: const Icon(Icons.edit),
+                            ),
+                            IconButton(
+                                onPressed: () => _deleteItem(
+                                    _status[index][Constant.KEY_STATUS_ID],
+                                    index),
+                                icon: const Icon(Icons.delete),
+                                color: Colors.red[900]),
+                          ],
                         ),
-                        IconButton(
-                            onPressed: () => _deleteItem(
-                                _status[index][Constant.KEY_STATUS_ID], index),
-                            icon: const Icon(Icons.delete),
-                            color: Colors.red[900]),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),

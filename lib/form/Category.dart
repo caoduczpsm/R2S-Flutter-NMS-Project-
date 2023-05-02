@@ -148,7 +148,6 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   }
 
   Future<void> _addItem() async {
-
     String message = '';
 
     if (_textNameController.text.isNotEmpty) {
@@ -176,7 +175,6 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   }
 
   Future<void> _updateItem(int id) async {
-
     String message = '';
     if (_textNameController.text.isNotEmpty) {
       if (_textNameController.text.length < 5) {
@@ -203,21 +201,17 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   }
 
   Future<void> _deleteItem(int id, int index) async {
-
     int? result = await CategoryHelper.deleteItem(id);
     if (result == null) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-            'Can not delete this '
-                '${_categories[index][Constant.KEY_CATEGORY_NAME]} '
-                'because there is a note'
-        ),
+        content: Text('Can not delete this '
+            '${_categories[index][Constant.KEY_CATEGORY_NAME]} '
+            'because there is a note'),
       ));
     } else {
       _showFormDelete(id, index);
     }
-
   }
 
   @override
@@ -227,38 +221,48 @@ class _CategoryScreenState extends State<_CategoryScreen> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: _categories.length,
-              itemBuilder: (context, index) => Card(
-                color: Colors.blueGrey[200],
-                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-                child: ListTile(
-                  title: Text(
-                      'Name: ${_categories[index][Constant.KEY_CATEGORY_NAME]}'),
-                  subtitle: Text(
-                      'Created At: ${_categories[index][Constant.KEY_CATEGORY_CREATED_DATE]}'),
-                  trailing: SizedBox(
-                    width: 100,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => _showForm(
-                              _categories[index][Constant.KEY_CATEGORY_ID]),
-                          icon: const Icon(Icons.edit),
+          : _categories.isEmpty
+              ? const Center(
+                  child: Text(
+                    "Chưa tạo category",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Colors.blue),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _categories.length,
+                  itemBuilder: (context, index) => Card(
+                    color: Colors.blueGrey[200],
+                    margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                    child: ListTile(
+                      title: Text(
+                          'Name: ${_categories[index][Constant.KEY_CATEGORY_NAME]}'),
+                      subtitle: Text(
+                          'Created At: ${_categories[index][Constant.KEY_CATEGORY_CREATED_DATE]}'),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => _showForm(
+                                  _categories[index][Constant.KEY_CATEGORY_ID]),
+                              icon: const Icon(Icons.edit),
+                            ),
+                            IconButton(
+                              onPressed: () => _deleteItem(
+                                  _categories[index][Constant.KEY_CATEGORY_ID],
+                                  index),
+                              icon: const Icon(Icons.delete),
+                              color: Colors.red[900],
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          onPressed: () => _deleteItem(
-                              _categories[index][Constant.KEY_CATEGORY_ID],
-                              index),
-                          icon: const Icon(Icons.delete),
-                          color: Colors.red[900],
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
