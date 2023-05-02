@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:note_management_system/db/CategoryHelper.dart';
 import 'package:note_management_system/model/Categories.dart';
+
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
 
 // ignore: must_be_immutable
 class CategoryScreen extends StatelessWidget {
-  static const String routeName='/form/Category';
-  User user = User();
 
-  CategoryScreen({super. key, required this.user});
+  User user;
+
+  CategoryScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +92,8 @@ class _CategoryScreenState extends State<_CategoryScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if( id == null) {
-                    if(_textNameController.text != ""){
-                      await _addItem();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Enter some text')));
-                    }
+                    if(!mounted) return;
+                    _addItem();
                   }
 
                   if(id != null){
@@ -117,38 +114,128 @@ class _CategoryScreenState extends State<_CategoryScreen> {
     );
   }
 
+  void _showFormDelete (int id, int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this ${_categories[index][Constant.KEY_CATEGORY_NAME]} category?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text("No"),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
+    ).then((value) async {
+      if (value == true) {
+        await CategoryHelper.deleteItem(id);
+        _refreshCategories();
+        if(!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Delete category ${_categories[index][Constant.KEY_CATEGORY_NAME]} successfully!"),
+        ));
+      }
+    });
+  }
+
   Future<void> _addItem() async{
+<<<<<<< HEAD
     int? id = await CategoryHelper.createItem(Categories(
         name: _textNameController.text,
         userId: user.id,
     ));
     if(id != null){
       _refreshCategories();
+=======
+    String message ='';
+    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
+
+    if(_textNameController.text.isNotEmpty) {
+      if(_textNameController.text.length < 5) {
+        message = 'Please enter at least 5 characters!';
+      } else {
+        int? id = await CategoryHelper.createItem(Categories(
+            name: _textNameController.text,
+            userId: user.id,
+            createdAt: dateFormat
+        ));
+        if(id == null){
+          message = 'Please enter another name, this name already exists!';
+        } else {
+          message = 'Available Category';
+          _refreshCategories();
+        }
+      }
+>>>>>>> Done_Cate_Status_Prio
     } else {
-      if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Available Category')));
+      message = 'Please enter name!';
     }
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
   }
 
   Future<void> _updateItem(int id) async {
+<<<<<<< HEAD
     await CategoryHelper.updateItem(Categories(
         id: id,
         name: _textNameController.text,
         userId: user.id,
+=======
+    String message = '';
+    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
+    if(_textNameController.text.isNotEmpty) {
+      if(_textNameController.text.length < 5) {
+        message = 'Please enter at least 5 characters!';
+      } else {
+        int? updateCate = await CategoryHelper.updateItem(Categories(
+          id: id,
+          name: _textNameController.text,
+          userId: user.id,
+          createdAt: dateFormat,
+        ));
+
+        if(updateCate == null){
+          message = 'Please enter another name, this name already exists!';
+        } else {
+          message = 'Successful category update!';
+          _refreshCategories();
+        }
+      }
+    }
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+>>>>>>> Done_Cate_Status_Prio
     ));
-    _refreshCategories();
   }
 
-  Future<void> _deleteItem(int id) async {
-      await CategoryHelper.deleteItem(id);
+  Future<void> _deleteItem(int id, int index) async {
+    String message = '';
 
-    if(!mounted) return;
+      int? result = await CategoryHelper.deleteItem(id);
+      if (result == null) {
+        message = 'Can not delete this ${_categories[index][Constant.KEY_CATEGORY_NAME]} because there is a note';
+      } else {
+        _showFormDelete(id, index);
+      }
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Successfully deleted a priority!'),
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
     ));
-    _refreshCategories();
   }
 
   @override
@@ -175,8 +262,8 @@ class _CategoryScreenState extends State<_CategoryScreen> {
                     onPressed: () => _showForm(_categories[index][Constant.KEY_CATEGORY_ID]),
                     icon: const Icon(Icons.edit),),
                   IconButton(
-                    onPressed: () => _deleteItem(_categories[index][Constant.KEY_CATEGORY_ID]),
-                    icon: const Icon(Icons.delete),),
+                    onPressed: () => _deleteItem(_categories[index][Constant.KEY_CATEGORY_ID], index),
+                    icon: const Icon(Icons.delete), color: Colors.red[900],),
                 ],
               ),
             ),

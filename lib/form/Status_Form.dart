@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:note_management_system/db/StatusHelper.dart';
 import 'package:note_management_system/model/Status.dart';
+
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
 
 // ignore: must_be_immutable
 class StatusScreen extends StatelessWidget {
-  static const String routeName= '/form/Status_Form';
+
   User user;
 
   StatusScreen({super.key, required this.user});
@@ -91,12 +92,8 @@ class _StatusScreenState extends State<_StatusScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if( id == null) {
-                    if(_textNameController.text != ""){
-                      await _addItem();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Enter some text')));
-                    }
+                    if(!mounted) return;
+                    _addItem();
                   }
 
                   if(id != null){
@@ -117,38 +114,128 @@ class _StatusScreenState extends State<_StatusScreen> {
     );
   }
 
+  void _showFormDelete (int id, int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this ${_status[index][Constant.KEY_STATUS_NAME]} status?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text("No"),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
+    ).then((value) async {
+      if (value == true) {
+        await StatusHelper.deleteItem(id);
+        _refreshStatus();
+        if(!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Delete status ${_status[index][Constant.KEY_STATUS_NAME]} successfully!"),
+        ));
+      }
+    });
+  }
+
   Future<void> _addItem() async{
+<<<<<<< HEAD
     int? id = await StatusHelper.createItem(Status(
         name: _textNameController.text,
         userId: user.id
     ));
     if(id != null){
       _refreshStatus();
+=======
+    String message ='';
+    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
+
+    if(_textNameController.text.isNotEmpty) {
+      if(_textNameController.text.length < 5) {
+        message = 'Please enter at least 5 characters!';
+      } else {
+        int? id = await StatusHelper.createItem(Status(
+            name: _textNameController.text,
+            userId: user.id,
+            createdAt: dateFormat
+        ));
+        if(id == null){
+          message = 'Please enter another name, this name already exists!';
+        } else {
+          message = 'Available Status';
+          _refreshStatus();
+        }
+      }
+>>>>>>> Done_Cate_Status_Prio
     } else {
-      if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Available Status')));
+      message = 'Please enter name!';
     }
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
   }
 
   Future<void> _updateItem(int id) async {
+<<<<<<< HEAD
     await StatusHelper.updateItem(Status(
         id: id,
         name: _textNameController.text,
         userId: user.id,
+=======
+    String message = '';
+    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
+    if(_textNameController.text.isNotEmpty) {
+      if(_textNameController.text.length < 5) {
+        message = 'Please enter at least 5 characters!';
+      } else {
+        int? updateStatus = await StatusHelper.updateItem(Status(
+          id: id,
+          name: _textNameController.text,
+          userId: user.id,
+          createdAt: dateFormat,
+        ));
+
+        if(updateStatus == null){
+          message = 'Please enter another name, this name already exists!';
+        } else {
+          message = 'Successful status update!';
+          _refreshStatus();
+        }
+      }
+    }
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+>>>>>>> Done_Cate_Status_Prio
     ));
-    _refreshStatus();
   }
 
-  Future<void> _deleteItem(int id) async {
-    await StatusHelper.deleteItem(id);
+  Future<void> _deleteItem(int id, int index) async {
+    String message = '';
 
-    if(!mounted) return;
+    int? result = await StatusHelper.deleteItem(id);
+    if (result == null) {
+      message = 'Can not delete this ${_status[index][Constant.KEY_STATUS_NAME]} because there is a note';
+    } else {
+      _showFormDelete(id, index);
+    }
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Successfully deleted a status!'),
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
     ));
-    _refreshStatus();
   }
 
   @override
@@ -175,8 +262,8 @@ class _StatusScreenState extends State<_StatusScreen> {
                     onPressed: () => _showForm(_status[index][Constant.KEY_STATUS_ID]),
                     icon: const Icon(Icons.edit),),
                   IconButton(
-                    onPressed: () => _deleteItem(_status[index][Constant.KEY_STATUS_ID]),
-                    icon: const Icon(Icons.delete),),
+                    onPressed: () => _deleteItem(_status[index][Constant.KEY_STATUS_ID],index),
+                    icon: const Icon(Icons.delete), color: Colors.red[900]),
                 ],
               ),
             ),
