@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:note_management_system/db/CategoryHelper.dart';
 import 'package:note_management_system/model/Categories.dart';
 import '../model/User.dart';

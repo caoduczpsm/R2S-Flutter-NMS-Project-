@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/model/Priorities.dart';
 import '../model/User.dart';
