@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:note_management_system/db/AppSQLHelper.dart';
 import 'package:note_management_system/model/Priorities.dart';
 // ignore: depend_on_referenced_packages
@@ -10,12 +9,32 @@ class PriorityHelper {
   static Future<int?> createItem(Priorities priorities) async {
     final db = await AppSQLHelper.db();
 
-    if(await checkCategoryAvailableByNameAndUserID(priorities.name!, priorities.userId!)){
+    if(await checkPriorityAvailableByNameAndUserID(priorities.name!, priorities.userId!)){
       return  await db.insert(Constant.KEY_TABLE_PRIORITY, priorities.toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
     } else {
       return null;
     }
+  }
+
+  static Future<int?> updateItem(Priorities priorities) async {
+    final db = await AppSQLHelper.db();
+    if(await checkPriorityAvailableByNameAndUserID(priorities.name!, priorities.userId!)){
+      return  await db.update(Constant.KEY_TABLE_PRIORITY, priorities.toMap(),
+          where: 'id = ?', whereArgs: [priorities.id]);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<bool> checkPriorityAvailableByNameAndUserID(String name, int userId) async {
+    final db = await AppSQLHelper.db();
+    final List<Map<String, dynamic>> maps = await db
+        .query(Constant.KEY_TABLE_PRIORITY,
+        where: '${Constant.KEY_PRIORITY_NAME} = ? AND ${Constant.KEY_PRIORITY_USER_ID} = ?',
+        whereArgs: [name, userId]);
+
+    return maps.isEmpty;
   }
 
   static Future<List<Map<String, dynamic>>> getAllItem(int userId) async {
@@ -38,33 +57,24 @@ class PriorityHelper {
     }
   }
 
-  static Future<int> updateItem(Priorities priorities) async {
+  static Future<bool> checkPriorityInUse(int id) async {
     final db = await AppSQLHelper.db();
-    final result = await db.update(Constant.KEY_TABLE_PRIORITY, priorities.toMap(),
-        where: '${Constant.KEY_PRIORITY_ID} = ?', whereArgs: [priorities.id]);
-    return result;
+    final note = await db.query(
+      Constant.KEY_TABLE_NOTE,
+      where: '${Constant.KEY_NOTE_PRIORITY_ID} = ?',
+      whereArgs: [id],
+    );
+    return note.isNotEmpty;
   }
 
   static Future<int?> deleteItem(int id) async {
     final db = await AppSQLHelper.db();
 
-    try {
+    if(await checkPriorityInUse(id)){
+      return null;
+    } else {
       return await db.delete(Constant.KEY_TABLE_PRIORITY,
           where: '${Constant.KEY_PRIORITY_ID} = ?', whereArgs: [id]);
-    } catch (err) {
-      debugPrint("Something went wrong when deleting an item: $err");
     }
-    return null;
   }
-
-  static Future<bool> checkCategoryAvailableByNameAndUserID(String name, int userId) async {
-    final db = await AppSQLHelper.db();
-    final List<Map<String, dynamic>> maps = await db
-        .query(Constant.KEY_TABLE_PRIORITY,
-        where: '${Constant.KEY_PRIORITY_NAME} = ? AND ${Constant.KEY_PRIORITY_USER_ID} = ?',
-        whereArgs: [name, userId]);
-
-    return maps.isEmpty;
-  }
-
 }

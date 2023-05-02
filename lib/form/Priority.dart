@@ -1,22 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:note_management_system/db/PriorityHelper.dart';
 import 'package:note_management_system/model/Priorities.dart';
+
 import '../model/User.dart';
 import '../ultilities/Constant.dart';
 
 // ignore: must_be_immutable
 class PriorityScreen extends StatelessWidget {
-static const String routeName= '/form/Priority';
+
   User user;
 
   PriorityScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _PriorityScreen(user: user));
+    return Scaffold(body: _PriorityScreen(user: user));
   }
 }
 
@@ -94,12 +93,8 @@ class _PriorityScreenState extends State<_PriorityScreen> {
               ElevatedButton(
                 onPressed: () async {
                   if( id == null) {
-                    if(_textNameController.text != ""){
-                      await _addItem();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Enter some text')));
-                    }
+                    if(!mounted) return;
+                    _addItem();
                   }
 
                   if(id != null){
@@ -120,42 +115,112 @@ class _PriorityScreenState extends State<_PriorityScreen> {
     );
   }
 
+  void _showFormDelete (int id, int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this ${_priority[index][Constant.KEY_PRIORITY_NAME]} priority?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text("No"),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
+    ).then((value) async {
+      if (value == true) {
+        await PriorityHelper.deleteItem(id);
+        _refreshPriority();
+        if(!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Delete priority ${_priority[index][Constant.KEY_PRIORITY_NAME]} successfully!"),
+        ));
+      }
+    });
+  }
+
   Future<void> _addItem() async{
+    String message ='';
     String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
-    int? id = await PriorityHelper.createItem(Priorities(
-        name: _textNameController.text,
-        userId: user.id,
-        createdAt: dateFormat
-    ));
-    if(id != null){
-      _refreshPriority();
+
+    if(_textNameController.text.isNotEmpty) {
+      if(_textNameController.text.length < 5) {
+        message = 'Please enter at least 5 characters!';
+      } else {
+        int? id = await PriorityHelper.createItem(Priorities(
+            name: _textNameController.text,
+            userId: user.id,
+            createdAt: dateFormat
+        ));
+        if(id == null){
+          message = 'Please enter another name, this name already exists!';
+        } else {
+          message = 'Available Priority';
+          _refreshPriority();
+        }
+      }
     } else {
-      if(!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Available Priority')));
+      message = 'Please enter name!';
     }
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
   }
 
   Future<void> _updateItem(int id) async {
+    String message = '';
     String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
-    await PriorityHelper.updateItem(Priorities(
-        id: id,
-        name: _textNameController.text,
-        userId: user.id,
-        createdAt: dateFormat
+    if(_textNameController.text.isNotEmpty) {
+      if(_textNameController.text.length < 5) {
+        message = 'Please enter at least 5 characters!';
+      } else {
+        int? updatePriority = await PriorityHelper.updateItem(Priorities(
+          id: id,
+          name: _textNameController.text,
+          userId: user.id,
+          createdAt: dateFormat,
+        ));
+
+        if(updatePriority == null){
+          message = 'Please enter another name, this name already exists!';
+        } else {
+          message = 'Successful priority update!';
+          _refreshPriority();
+        }
+      }
+    }
+    if(!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
     ));
-    _refreshPriority();
   }
 
-  Future<void> _deleteItem(int id) async {
-    await PriorityHelper.deleteItem(id);
+  Future<void> _deleteItem(int id, int index) async {
+    String message = '';
 
-    if(!mounted) return;
+    int? result = await PriorityHelper.deleteItem(id);
+    if (result == null) {
+      message = 'Can not delete this ${_priority[index][Constant.KEY_PRIORITY_NAME]} because there is a note';
+    } else {
+      _showFormDelete(id, index);
+    }
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Successfully deleted a priority!'),
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
     ));
-    _refreshPriority();
   }
 
   @override
@@ -182,8 +247,8 @@ class _PriorityScreenState extends State<_PriorityScreen> {
                     onPressed: () => _showForm(_priority[index][Constant.KEY_PRIORITY_ID]),
                     icon: const Icon(Icons.edit),),
                   IconButton(
-                    onPressed: () => _deleteItem(_priority[index][Constant.KEY_PRIORITY_ID]),
-                    icon: const Icon(Icons.delete),),
+                    onPressed: () => _deleteItem(_priority[index][Constant.KEY_PRIORITY_ID], index),
+                    icon: const Icon(Icons.delete), color: Colors.red[900]),
                 ],
               ),
             ),
