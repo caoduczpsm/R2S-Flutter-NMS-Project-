@@ -7,7 +7,6 @@ import '../ultilities/Constant.dart';
 
 // ignore: must_be_immutable
 class CategoryScreen extends StatelessWidget {
-
   User user;
 
   CategoryScreen({super.key, required this.user});
@@ -19,8 +18,7 @@ class CategoryScreen extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class _CategoryScreen extends StatefulWidget{
-
+class _CategoryScreen extends StatefulWidget {
   User user;
 
   _CategoryScreen({Key? key, required this.user}) : super(key: key);
@@ -31,7 +29,6 @@ class _CategoryScreen extends StatefulWidget{
 }
 
 class _CategoryScreenState extends State<_CategoryScreen> {
-
   User user;
 
   _CategoryScreenState({required this.user});
@@ -40,7 +37,8 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   bool _isLoading = true;
 
   Future<void> _refreshCategories() async {
-    final List<Map<String, dynamic>> data = await CategoryHelper.getAllItem(user.id!);
+    final List<Map<String, dynamic>> data =
+        await CategoryHelper.getAllItem(user.id!);
     setState(() {
       _categories = data;
       _isLoading = false;
@@ -57,10 +55,9 @@ class _CategoryScreenState extends State<_CategoryScreen> {
   final TextEditingController _textNameController = TextEditingController();
 
   void _showForm(int? id) async {
-
-    if(id != null) {
-      final existingJournal =
-      _categories.firstWhere((element) => element[Constant.KEY_CATEGORY_ID] == id);
+    if (id != null) {
+      final existingJournal = _categories
+          .firstWhere((element) => element[Constant.KEY_CATEGORY_ID] == id);
       _textNameController.text = existingJournal[Constant.KEY_CATEGORY_NAME];
     }
 
@@ -69,58 +66,58 @@ class _CategoryScreenState extends State<_CategoryScreen> {
         elevation: 5,
         isScrollControlled: true,
         builder: (_) => Container(
-          padding: EdgeInsets.only(
-            top: 15,
-            left: 15,
-            right: 15,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 400,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextFormField(
-                controller: _textNameController,
-                decoration: const InputDecoration(hintText: 'Name'),
+              padding: EdgeInsets.only(
+                top: 15,
+                left: 15,
+                right: 15,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 400,
               ),
-              const SizedBox(
-                height: 10,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextFormField(
+                    controller: _textNameController,
+                    decoration: const InputDecoration(hintText: 'Name'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (id == null) {
+                        if (!mounted) return;
+                        _addItem();
+                      }
+
+                      if (id != null) {
+                        await _updateItem(id);
+                      }
+
+                      _textNameController.text = '';
+
+                      if (!mounted) return;
+
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(id == null ? "Create New" : "Update"),
+                  )
+                ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  if( id == null) {
-                    if(!mounted) return;
-                    _addItem();
-                  }
-
-                  if(id != null){
-                    await _updateItem(id);
-                  }
-
-                  _textNameController.text = '';
-
-                  if(!mounted) return;
-
-                  Navigator.of(context).pop();
-                },
-                child: Text(id == null ? "Create New" : "Update"),
-              )
-            ],
-          ),
-        )
-    );
+            ));
   }
 
-  void _showFormDelete (int id, int index) {
+  void _showFormDelete(int id, int index) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text("Confirm Delete"),
-          content: Text("Are you sure you want to delete this ${_categories[index][Constant.KEY_CATEGORY_NAME]} category?"),
+          content: Text(
+              "Are you sure you want to delete this ${_categories[index][Constant.KEY_CATEGORY_NAME]} category?"),
           actions: [
             TextButton(
               onPressed: () {
@@ -141,73 +138,57 @@ class _CategoryScreenState extends State<_CategoryScreen> {
       if (value == true) {
         await CategoryHelper.deleteItem(id);
         _refreshCategories();
-        if(!mounted) return;
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Delete category ${_categories[index][Constant.KEY_CATEGORY_NAME]} successfully!"),
+          content: Text(
+              "Delete category ${_categories[index][Constant.KEY_CATEGORY_NAME]} successfully!"),
         ));
       }
     });
   }
 
-  Future<void> _addItem() async{
-<<<<<<< HEAD
-    int? id = await CategoryHelper.createItem(Categories(
-        name: _textNameController.text,
-        userId: user.id,
-    ));
-    if(id != null){
-      _refreshCategories();
-=======
-    String message ='';
-    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
+  Future<void> _addItem() async {
 
-    if(_textNameController.text.isNotEmpty) {
-      if(_textNameController.text.length < 5) {
+    String message = '';
+
+    if (_textNameController.text.isNotEmpty) {
+      if (_textNameController.text.length < 5) {
         message = 'Please enter at least 5 characters!';
       } else {
         int? id = await CategoryHelper.createItem(Categories(
-            name: _textNameController.text,
-            userId: user.id,
-            createdAt: dateFormat
+          name: _textNameController.text,
+          userId: user.id,
         ));
-        if(id == null){
+        if (id == null) {
           message = 'Please enter another name, this name already exists!';
         } else {
-          message = 'Available Category';
+          message = 'Create category successfully';
           _refreshCategories();
         }
       }
->>>>>>> Done_Cate_Status_Prio
     } else {
       message = 'Please enter name!';
     }
-    if(!mounted) return;
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
   }
 
   Future<void> _updateItem(int id) async {
-<<<<<<< HEAD
-    await CategoryHelper.updateItem(Categories(
-        id: id,
-        name: _textNameController.text,
-        userId: user.id,
-=======
+
     String message = '';
-    String dateFormat = DateFormat("yyyy-mm-dd - kk:mm:ss").format(DateTime.now());
-    if(_textNameController.text.isNotEmpty) {
-      if(_textNameController.text.length < 5) {
+    if (_textNameController.text.isNotEmpty) {
+      if (_textNameController.text.length < 5) {
         message = 'Please enter at least 5 characters!';
       } else {
         int? updateCate = await CategoryHelper.updateItem(Categories(
           id: id,
           name: _textNameController.text,
           userId: user.id,
-          createdAt: dateFormat,
         ));
 
-        if(updateCate == null){
+        if (updateCate == null) {
           message = 'Please enter another name, this name already exists!';
         } else {
           message = 'Successful category update!';
@@ -215,27 +196,28 @@ class _CategoryScreenState extends State<_CategoryScreen> {
         }
       }
     }
-    if(!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
->>>>>>> Done_Cate_Status_Prio
-    ));
-  }
-
-  Future<void> _deleteItem(int id, int index) async {
-    String message = '';
-
-      int? result = await CategoryHelper.deleteItem(id);
-      if (result == null) {
-        message = 'Can not delete this ${_categories[index][Constant.KEY_CATEGORY_NAME]} because there is a note';
-      } else {
-        _showFormDelete(id, index);
-      }
-
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
+  }
+
+  Future<void> _deleteItem(int id, int index) async {
+
+    int? result = await CategoryHelper.deleteItem(id);
+    if (result == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Can not delete this '
+                '${_categories[index][Constant.KEY_CATEGORY_NAME]} '
+                'because there is a note'
+        ),
+      ));
+    } else {
+      _showFormDelete(id, index);
+    }
+
   }
 
   @override
@@ -243,33 +225,40 @@ class _CategoryScreenState extends State<_CategoryScreen> {
     return Scaffold(
       body: _isLoading
           ? const Center(
-        child: CircularProgressIndicator(),
-      ) : ListView.builder(
-        itemCount: _categories.length,
-        itemBuilder: (context, index) => Card(
-          color: Colors.blueGrey[200],
-          margin: const EdgeInsets.only(
-              left: 10, right: 10, top: 10
-          ),
-          child: ListTile(
-            title: Text('Name: ${_categories[index][Constant.KEY_CATEGORY_NAME]}'),
-            subtitle: Text('Created At: ${_categories[index][Constant.KEY_CATEGORY_CREATED_DATE]}'),
-            trailing: SizedBox(
-              width: 100,
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => _showForm(_categories[index][Constant.KEY_CATEGORY_ID]),
-                    icon: const Icon(Icons.edit),),
-                  IconButton(
-                    onPressed: () => _deleteItem(_categories[index][Constant.KEY_CATEGORY_ID], index),
-                    icon: const Icon(Icons.delete), color: Colors.red[900],),
-                ],
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              itemCount: _categories.length,
+              itemBuilder: (context, index) => Card(
+                color: Colors.blueGrey[200],
+                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: ListTile(
+                  title: Text(
+                      'Name: ${_categories[index][Constant.KEY_CATEGORY_NAME]}'),
+                  subtitle: Text(
+                      'Created At: ${_categories[index][Constant.KEY_CATEGORY_CREATED_DATE]}'),
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => _showForm(
+                              _categories[index][Constant.KEY_CATEGORY_ID]),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          onPressed: () => _deleteItem(
+                              _categories[index][Constant.KEY_CATEGORY_ID],
+                              index),
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red[900],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
@@ -277,5 +266,4 @@ class _CategoryScreenState extends State<_CategoryScreen> {
       ),
     );
   }
-
 }
