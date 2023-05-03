@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:note_management_system/form/EditProfile_ChangePassword/ChangePassword.dart';
 import 'package:note_management_system/form/dashboard_page/item.dart';
 import '../../model/User.dart';
 import '../Category.dart';
+import '../EditProfile_ChangePassword/EditProfile.dart';
 import '../NoteScreen.dart';
 import '../Priority.dart';
 import '../Status_Form.dart';
@@ -74,8 +76,8 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 100.0,
-                    height: 100.0,
+                    width: 90.0,
+                    height: 90.0,
                     child: Image.asset('images/logo.png',
                       fit: BoxFit.contain,
                     ),
@@ -84,6 +86,12 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
+                    ),
+                  ),
+                  Text(user.email!,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
                     ),
                   ),
                 ],
@@ -145,6 +153,35 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 setState(() {
                   _selectedIndex = 4;
                   _currentScreen = StatusScreen(user: user);
+                });
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(),
+            Container(
+              margin: const EdgeInsets.only(left: 15),
+              child: const Text("Account"),
+            ),
+            ListTile(
+              selectedTileColor: _selectedIndex == 4 ? Colors.blue : Colors.transparent,
+              title: const Text('Edit Profile'),
+              leading: const Icon(Icons.account_box),
+              onTap: () {
+                setState(() {
+                  _selectedIndex = 4;
+                  _currentScreen = EditProfileForm(user: user);
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              selectedTileColor: _selectedIndex == 4 ? Colors.blue : Colors.transparent,
+              title: const Text('Change Password'),
+              leading: const Icon(Icons.password),
+              onTap: () {
+                setState(() {
+                  _selectedIndex = 4;
+                  _currentScreen = ChangePasswordForm(user: user);
                 });
                 Navigator.pop(context);
               },
