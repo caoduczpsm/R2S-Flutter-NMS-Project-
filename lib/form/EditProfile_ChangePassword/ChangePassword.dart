@@ -106,15 +106,12 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
                         case 1: {
                           return 'Password length from 6 - 32 characters';
                         }
-                        break;
                         case 2: {
                           return 'Please enter at least 1 capital letter';
                         }
-                        break;
                         case 3: {
                           return 'Please enter at least 1 number';
                         }
-                        break;
                       }
                     }
                     return null;

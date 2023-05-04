@@ -98,7 +98,6 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
                         case 1: {
                           return 'First Name has a length of 2 - 32 characters';
                         }
-                        break;
                         case 2: {
                           return 'Please do not end with a space';
                         }
@@ -130,7 +129,6 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
                         case 1: {
                           return 'First Name has a length of 2 - 32 characters';
                         }
-                        break;
                         case 2: {
                           return 'Please do not end with a space';
                         }
@@ -154,8 +152,19 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
                   validator: (value) {
                     if (value == null || value.isEmpty){
                       return 'Please enter email';
-                    } else if (userController.checkValidEmail(_email.text) == false){
-                      return 'Invalid Email';
+                    } else {
+                      int result = userController.checkValidEmail(_email.text);
+                      switch (result){
+                        case 1: {
+                          return 'Please enter at least 6 characters';
+                        }
+                        case 2: {
+                          return 'Please enter up to 256 characters';
+                        }
+                        case 3: {
+                          return 'Invalid Email';
+                        }
+                      }
                     }
                     return null;
                   },

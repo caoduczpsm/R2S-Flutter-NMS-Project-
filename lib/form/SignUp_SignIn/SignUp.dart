@@ -80,15 +80,12 @@ class _MySignUpFormState extends State<_MySignUpForm> {
                               case 1: {
                                 return 'Please enter at least 6 characters';
                               }
-                              break;
                               case 2: {
                                 return 'Please enter up to 256 characters';
                               }
-                              break;
                               case 3: {
                                 return 'Invalid Email';
                               }
-                              break;
                             }
                           }
                           return null;
@@ -120,15 +117,12 @@ class _MySignUpFormState extends State<_MySignUpForm> {
                               case 1: {
                                 return 'Password length from 6 - 32 characters';
                               }
-                              break;
                               case 2: {
                                 return 'Please enter at least 1 capital letter';
                               }
-                              break;
                               case 3: {
                                 return 'Please enter at least 1 number';
                               }
-                              break;
                             }
                           }
                           return null;
@@ -247,46 +241,6 @@ class _MySignUpFormState extends State<_MySignUpForm> {
                               ),
                             ),
                           ),
-                          // ElevatedButton(
-                          //   onPressed:() async {
-                          //     if (_signUpForm.currentState!.validate()){
-                          //       if (await userController.register(_email.text.trim(),
-                          //           _password.text.trim())){
-                          //
-                          //         if (!mounted) return;
-                          //         ScaffoldMessenger.of(context).showSnackBar(
-                          //             const SnackBar(content: Text('Register Successful')));
-                          //       } else {
-                          //         if (!mounted) return;
-                          //         ScaffoldMessenger.of(context).showSnackBar(
-                          //             const SnackBar(content: Text('Email Already Used')));
-                          //       }
-                          //     }
-                          //   },
-                          //   child: const Text(
-                          //     'SIGN UP',
-                          //     style: TextStyle(
-                          //       color: Colors.white,
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // ),
-                          // ElevatedButton(
-                          //   onPressed:(){
-                          //     Navigator.of(context)
-                          //         .push(MaterialPageRoute(builder: (context)
-                          //     => const SignInForm()));
-                          //   },
-                          //   child:  const Text(
-                          //     'SIGN IN',
-                          //     style: TextStyle(
-                          //       color: Colors.white,
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          // )
                         ],
                       ),
                     )
