@@ -224,7 +224,7 @@ class _StatusScreenState extends State<_StatusScreen> {
           : _status.isEmpty
               ? const Center(
                   child: Text(
-                    "Chưa tạo status",
+                    "Empty status",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,

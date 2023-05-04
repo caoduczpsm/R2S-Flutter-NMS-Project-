@@ -117,7 +117,8 @@ class _CategoryScreenState extends State<_CategoryScreen> {
         return AlertDialog(
           title: const Text("Confirm Delete"),
           content: Text(
-              "Are you sure you want to delete this ${_categories[index][Constant.KEY_CATEGORY_NAME]} category?"),
+              "Are you sure you want to delete this "
+                  "${_categories[index][Constant.KEY_CATEGORY_NAME]} category?"),
           actions: [
             TextButton(
               onPressed: () {
@@ -224,7 +225,7 @@ class _CategoryScreenState extends State<_CategoryScreen> {
           : _categories.isEmpty
               ? const Center(
                   child: Text(
-                    "Chưa tạo category",
+                    "Empty category",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,

@@ -224,7 +224,7 @@ class _PriorityScreenState extends State<_PriorityScreen> {
           : _priority.isEmpty
               ? const Center(
                   child: Text(
-                    "Chưa tạo priority",
+                    "Empty priority",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,

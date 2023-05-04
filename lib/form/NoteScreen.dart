@@ -320,15 +320,15 @@ class _NoteScreenState extends State<_NoteScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Xác nhận xóa"),
-          content: Text("Bạn có chắc chắn muốn xóa note "
-              "${_notes[index][Constant.KEY_NOTE_NAME]} này không?"),
+          title: const Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this "
+              "${_notes[index][Constant.KEY_NOTE_NAME]} note?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("Hủy"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () async {
@@ -339,7 +339,7 @@ class _NoteScreenState extends State<_NoteScreen> {
                 if (!mounted) return;
                 _refreshData();
               },
-              child: const Text("Xóa"),
+              child: const Text("Yes"),
             ),
           ],
         );
@@ -356,9 +356,9 @@ class _NoteScreenState extends State<_NoteScreen> {
 
     if (_textNameController.text.trim().isNotEmpty) {
       if (_textNameController.text.trim().length < 5) {
-        message = "Vui lòng nhập tối thiểu 5 ký tự";
+        message = "Please enter at least 5 characters";
       } else if (!canCreate) {
-        message = "Vui lòng chọn ngày hoàn thành bắt đầu từ ngày hiện tại";
+        message = "Please select completion date starting from current date";
       } else {
         Note note = Note(
             name: _textNameController.text,
@@ -370,14 +370,14 @@ class _NoteScreenState extends State<_NoteScreen> {
         int? id = await NoteSQLHelper.createNote(note);
 
         if (id == null) {
-          message = 'Vui lòng nhập tên khác, tên này đã tồn tại';
+          message = 'Please enter another name, this name already exists';
         } else {
-          message = "Tạo note thành công";
+          message = "Create category successfully";
           _refreshData();
         }
       }
     } else {
-      message = 'Vui lòng nhập tên';
+      message = 'Please enter name';
     }
 
     if (!mounted) return;
@@ -395,9 +395,9 @@ class _NoteScreenState extends State<_NoteScreen> {
 
     if (_textNameController.text.trim().isNotEmpty) {
       if (_textNameController.text.trim().length < 5) {
-        message = "Vui lòng nhập tối thiểu 5 ký tự";
+        message = "Please enter at least 5 characters";
       } else if (!canUpdate) {
-        message = "Vui lòng chọn ngày hoàn thành bắt đầu từ ngày hiện tại";
+        message = "Please select completion date starting from current date";
       } else {
         Note note = Note(
           id: id,
@@ -418,13 +418,13 @@ class _NoteScreenState extends State<_NoteScreen> {
                 _selectedDate != _notes[index][Constant.KEY_NOTE_PLAN_DATE]) &&
             _textNameController.text == _notes[index][Constant.KEY_NOTE_NAME]) {
           await NoteSQLHelper.updateNote(note, true);
-          message = "Cập nhật thông tin note thành công";
+          message = "Update note successfully";
         } else {
           int? updatedNote = await NoteSQLHelper.updateNote(note, false);
           if (updatedNote == null) {
-            message = 'Vui lòng nhập tên khác, tên này đã tồn tại';
+            message = 'Please enter another name, this name already exists';
           } else {
-            message = "Cập nhật thông tin note thành công";
+            message = "Update note successfully";
             _refreshData();
           }
         }
@@ -457,8 +457,8 @@ class _NoteScreenState extends State<_NoteScreen> {
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content:
-              Text("Không xóa được ${_notes[index][Constant.KEY_NOTE_NAME]} "
-                  "vì chưa quá 6 tháng"),
+              Text("Cannot delete this ${_notes[index][Constant.KEY_NOTE_NAME]} "
+                  "because less 6 months"),
         ));
       }
     } else {
@@ -479,7 +479,7 @@ class _NoteScreenState extends State<_NoteScreen> {
           : _notes.isEmpty
               ? const Center(
                   child: Text(
-                    "Chưa tạo note",
+                    "Empty note",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
