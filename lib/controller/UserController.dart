@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:note_management_system/db/UserDatabase.dart';
 // ignore: depend_on_referenced_packages
 import 'package:crypto/crypto.dart';
+import 'package:note_management_system/ultilities/Constant.dart';
 import '../model/User.dart';
 
 
@@ -11,17 +12,17 @@ class UserController {
 
   int checkValidEmail(String email){
     if (email.length < 6) {
-      return 1;
+      return Constant.KEY_EMAIL_HAS_LENGTH_LESS_6_CHAR;
     } else
       if (email.length > 256){
-        return 2;
+        return Constant.KEY_EMAIL_HAS_LENGTH_GREATER_256_CHAR;
       }
        else
         if (RegExp(r'^(?!.*\.{2})[a-zA-Z0-9._]+(?<!\.)@[a-zA-Z0-9.-]+(?<!\.{2})\.[a-zA-Z]{2,}$')
             .hasMatch(email) == false) {
-          return 3;
+          return Constant.KEY_EMAIL_MALFORMED;
         } else {
-          return 0;
+          return Constant.KEY_VALID_EMAIL;
         }
   }
 

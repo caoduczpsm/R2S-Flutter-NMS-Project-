@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../../controller/UserController.dart';
 import '../../model/User.dart';
 
+import '../../ultilities/Constant.dart';
 import '../dashboard_page/dashboard.dart';
 
 
@@ -95,10 +96,10 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
                     } else {
                       int result = userController.checkValidName(_firstName.text);
                       switch (result){
-                        case 1: {
+                        case Constant.KEY_EMAIL_HAS_LENGTH_LESS_6_CHAR: {
                           return 'First Name has a length of 2 - 32 characters';
                         }
-                        case 2: {
+                        case Constant.KEY_EMAIL_HAS_LENGTH_GREATER_256_CHAR: {
                           return 'Please do not end with a space';
                         }
                       }
@@ -126,10 +127,10 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
                     } else {
                       int result = userController.checkValidName(_lastName.text);
                       switch (result){
-                        case 1: {
+                        case Constant.KEY_EMAIL_HAS_LENGTH_LESS_6_CHAR: {
                           return 'First Name has a length of 2 - 32 characters';
                         }
-                        case 2: {
+                        case Constant.KEY_EMAIL_HAS_LENGTH_GREATER_256_CHAR: {
                           return 'Please do not end with a space';
                         }
                       }

@@ -93,5 +93,16 @@ class Constant{
   // ignore: constant_identifier_names
   static const PRIMARY_COLOR = Color(0XFF4CAEE3);
   static const kBackgroundColor = Color(0XFFE5E5E5);
+
+  // Đăng nhập đăng ký
+
+  // ignore: constant_identifier_names
+  static const KEY_EMAIL_HAS_LENGTH_LESS_6_CHAR  = 1;
+  // ignore: constant_identifier_names
+  static const KEY_EMAIL_HAS_LENGTH_GREATER_256_CHAR  = 2;
+  // ignore: constant_identifier_names
+  static const KEY_EMAIL_MALFORMED  = 3;
+  // ignore: constant_identifier_names
+  static const KEY_VALID_EMAIL  = 0;
 }
 

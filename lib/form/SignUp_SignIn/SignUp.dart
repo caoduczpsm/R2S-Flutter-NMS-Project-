@@ -158,7 +158,7 @@ class _MySignUpFormState extends State<_MySignUpForm> {
                         obscureText: true,
                       ),),
                     const SizedBox(height: 10),
-                    Container(
+                    SizedBox(
                       width: size.width * 0.8,
                       height: size.height * 0.06,
                       child: Row(
