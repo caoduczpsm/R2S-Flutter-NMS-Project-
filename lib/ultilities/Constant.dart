@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Constant{
   // ignore: constant_identifier_names
   static const KEY_DB_NAME = "note_management_system";
@@ -86,5 +88,10 @@ class Constant{
   static const KEY_NOTE_PRIORITY_NAME = "priority_name";
   // ignore: constant_identifier_names
   static const KEY_NOTE_STATUS_NAME = "status_name";
+
+  // Màu Form Login, Register
+  // ignore: constant_identifier_names
+  static const PRIMARY_COLOR = Color(0XFF4CAEE3);
+  static const kBackgroundColor = Color(0XFFE5E5E5);
 }
 

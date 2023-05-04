@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../controller/UserController.dart';
 import '../../model/User.dart';
 
@@ -83,9 +84,25 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
                     hintText: 'First Name',
                     prefixIcon: Icon(Icons.drive_file_rename_outline),
                   ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[a-zA-Z\s]'),
+                    ),
+                  ],
                   validator: (value){
                     if (value == null || value.isEmpty){
                       return 'Please enter First Name';
+                    } else {
+                      int result = userController.checkValidName(_firstName.text);
+                      switch (result){
+                        case 1: {
+                          return 'First Name has a length of 2 - 32 characters';
+                        }
+                        break;
+                        case 2: {
+                          return 'Please do not end with a space';
+                        }
+                      }
                     }
                     return null;
                   },
@@ -99,9 +116,25 @@ class _MyEditProfileFormState extends State<_MyEditProfileForm> {
                     hintText: 'Last Name',
                     prefixIcon: Icon(Icons.drive_file_rename_outline),
                   ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[a-zA-Z\s]'),
+                    ),
+                  ],
                   validator: (value){
                     if (value == null || value.isEmpty){
                       return 'Please enter Last Name';
+                    } else {
+                      int result = userController.checkValidName(_lastName.text);
+                      switch (result){
+                        case 1: {
+                          return 'First Name has a length of 2 - 32 characters';
+                        }
+                        break;
+                        case 2: {
+                          return 'Please do not end with a space';
+                        }
+                      }
                     }
                     return null;
                   },

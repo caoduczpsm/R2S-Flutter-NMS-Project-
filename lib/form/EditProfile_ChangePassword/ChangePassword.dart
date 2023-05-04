@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../controller/UserController.dart';
 import 'package:note_management_system/model/User.dart';
 
@@ -93,9 +94,28 @@ class _MyChangePasswordFormState extends State<_MyChangePasswordForm> {
                     hintText: 'Password',
                     prefixIcon: Icon(Icons.key),
                   ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(RegExp(r"\s")),
+                  ],
                   validator: (value){
                     if (value == null || value.isEmpty){
                       return 'Please enter password';
+                    } else {
+                      int result = userController.checkValidPassword(_password.text);
+                      switch (result){
+                        case 1: {
+                          return 'Password length from 6 - 32 characters';
+                        }
+                        break;
+                        case 2: {
+                          return 'Please enter at least 1 capital letter';
+                        }
+                        break;
+                        case 3: {
+                          return 'Please enter at least 1 number';
+                        }
+                        break;
+                      }
                     }
                     return null;
                   },

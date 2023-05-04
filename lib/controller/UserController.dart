@@ -9,13 +9,47 @@ import '../model/User.dart';
 class UserController {
 
 
-  bool checkValidEmail(String email){
-    if (RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-        .hasMatch(email) == true) {
-      return true;
-    } else {
-      return false;
-    }
+  int checkValidEmail(String email){
+    if (email.length < 6) {
+      return 1;
+    } else
+      if (email.length > 256){
+        return 2;
+      }
+       else
+        if (RegExp(r'^(?!.*\.{2})[a-zA-Z0-9._]+(?<!\.)@[a-zA-Z0-9.-]+(?<!\.{2})\.[a-zA-Z]{2,}$')
+            .hasMatch(email) == false) {
+          return 3;
+        } else {
+          return 0;
+        }
+  }
+
+  int checkValidPassword(String password){
+    if (password.length < 6 || password.length > 32){
+      return 1;
+    } else
+      if (RegExp(r'^(?=.*[A-Z]).+$')
+          .hasMatch(password) == false) {
+        return 2;
+      } else
+        if (RegExp(r'^(?=.*\d).+$')
+            .hasMatch(password) == false){
+          return 3;
+        } else {
+          return 0;
+        }
+  }
+
+  int checkValidName(String name){
+    if (name.length < 2 || name.length > 32){
+      return 1;
+    } else
+      if (name[name.length-1] == " "){
+        return 2;
+      } else {
+        return 0;
+      }
   }
 
   Future<bool> register(String email, password) async{
