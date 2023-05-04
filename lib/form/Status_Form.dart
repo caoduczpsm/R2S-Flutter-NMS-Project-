@@ -151,8 +151,8 @@ class _StatusScreenState extends State<_StatusScreen> {
     String message = '';
 
     if (_textNameController.text.isNotEmpty) {
-      if (_textNameController.text.length < 5) {
-        message = 'Please enter at least 5 characters!';
+      if (_textNameController.text.length < 4) {
+        message = 'Please enter at least 4 characters!';
       } else {
         int? id = await StatusHelper.createItem(Status(
           name: _textNameController.text,
@@ -177,8 +177,8 @@ class _StatusScreenState extends State<_StatusScreen> {
   Future<void> _updateItem(int id) async {
     String message = '';
     if (_textNameController.text.isNotEmpty) {
-      if (_textNameController.text.length < 5) {
-        message = 'Please enter at least 5 characters!';
+      if (_textNameController.text.length < 4) {
+        message = 'Please enter at least 4 characters!';
       } else {
         int? updateStatus = await StatusHelper.updateItem(Status(
           id: id,

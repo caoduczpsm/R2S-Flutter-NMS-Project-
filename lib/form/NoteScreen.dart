@@ -372,7 +372,7 @@ class _NoteScreenState extends State<_NoteScreen> {
         if (id == null) {
           message = 'Please enter another name, this name already exists';
         } else {
-          message = "Create category successfully";
+          message = "Create note successfully";
           _refreshData();
         }
       }
@@ -698,7 +698,7 @@ class _NoteScreenState extends State<_NoteScreen> {
                                                       .showSnackBar(
                                                           const SnackBar(
                                                     content: Text(
-                                                        "Bạn chưa tạo category hoặc status hoặc priority"),
+                                                        "Empty category, status or priority"),
                                                   ))
                                                 }
                                             },
@@ -732,7 +732,7 @@ class _NoteScreenState extends State<_NoteScreen> {
                   {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
-                          "Bạn chưa tạo category hoặc status hoặc priority"),
+                          "Empty category, status or priority"),
                     ))
                   }
               }),

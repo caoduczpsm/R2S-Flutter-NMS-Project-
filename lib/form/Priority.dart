@@ -151,8 +151,8 @@ class _PriorityScreenState extends State<_PriorityScreen> {
     String message = '';
 
     if (_textNameController.text.isNotEmpty) {
-      if (_textNameController.text.length < 5) {
-        message = 'Please enter at least 5 characters!';
+      if (_textNameController.text.length < 4) {
+        message = 'Please enter at least 4 characters!';
       } else {
         int? id = await PriorityHelper.createItem(Priorities(
           name: _textNameController.text,
@@ -177,8 +177,8 @@ class _PriorityScreenState extends State<_PriorityScreen> {
   Future<void> _updateItem(int id) async {
     String message = '';
     if (_textNameController.text.isNotEmpty) {
-      if (_textNameController.text.length < 5) {
-        message = 'Please enter at least 5 characters!';
+      if (_textNameController.text.length < 4) {
+        message = 'Please enter at least 4 characters!';
       } else {
         int? updatePriority = await PriorityHelper.updateItem(Priorities(
           id: id,
