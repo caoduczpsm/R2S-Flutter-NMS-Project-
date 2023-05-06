@@ -446,7 +446,7 @@ class _NoteScreenState extends State<_NoteScreen> {
     if (_notes[index][Constant.KEY_NOTE_STATUS_NAME] ==
         Constant.KEY_STATUS_DONE) {
       bool canDelete =
-          completedDate.isAfter(now.subtract(const Duration(days: 180))) &&
+          completedDate.isBefore(now.subtract(const Duration(days: 180))) &&
               completedDate.isBefore(now);
 
       if (canDelete) {

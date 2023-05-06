@@ -104,5 +104,8 @@ class Constant{
   static const KEY_EMAIL_MALFORMED  = 3;
   // ignore: constant_identifier_names
   static const KEY_VALID_EMAIL  = 0;
+
+  // ignore: constant_identifier_names
+  static const KEY_STATUS_COUNT = "count";
 }
 

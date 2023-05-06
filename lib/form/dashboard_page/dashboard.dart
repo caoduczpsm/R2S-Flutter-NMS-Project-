@@ -43,6 +43,7 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
   _MyNoteManagementAppState({required this.user});
 
   Widget? _currentScreen;
+  String? _currentTitle;
 
   final mainImage = Image.asset(
     'images/drawer_background.jpg',
@@ -52,14 +53,15 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentScreen = ItemDashboard();
+    _currentScreen = HomeScreen(user: user,);
+    _currentTitle = 'Note Management System';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Note Management System'),
+        title: Text(_currentTitle!),
       ),
       drawer: Drawer(
         child: ListView(
@@ -103,8 +105,9 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
               leading: const Icon(Icons.home),
               onTap: () {
                 setState(() {
-                  _currentScreen = ItemDashboard();
+                  _currentScreen = HomeScreen(user: user,);
                   _selectedIndex = 0;
+                  _currentTitle = "Note Management System";
                 });
                 Navigator.pop(context);
               },
@@ -117,6 +120,7 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 setState(() {
                   _currentScreen = NoteScreen(user: user);
                   _selectedIndex = 1;
+                  _currentTitle = "Note";
                 });
                 Navigator.pop(context);
               },
@@ -129,6 +133,7 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 setState(() {
                   _currentScreen = CategoryScreen(user: user);
                   _selectedIndex = 2;
+                  _currentTitle = "Category";
                 });
                 Navigator.pop(context);
               },
@@ -141,6 +146,7 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 setState(() {
                   _currentScreen = PriorityScreen(user: user);
                   _selectedIndex = 3;
+                  _currentTitle = "Priority";
                 });
                 Navigator.pop(context);
               },
@@ -153,6 +159,7 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 setState(() {
                   _selectedIndex = 4;
                   _currentScreen = StatusScreen(user: user);
+                  _currentTitle = "Status";
                 });
                 Navigator.pop(context);
               },
@@ -170,6 +177,7 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 setState(() {
                   _selectedIndex = 4;
                   _currentScreen = EditProfileForm(user: user);
+                  _currentTitle = "Edit Profile";
                 });
                 Navigator.pop(context);
               },
@@ -182,6 +190,7 @@ class _MyNoteManagementAppState extends State<MyNoteManagementApp> {
                 setState(() {
                   _selectedIndex = 4;
                   _currentScreen = ChangePasswordForm(user: user);
+                  _currentTitle = "Change Password";
                 });
                 Navigator.pop(context);
               },

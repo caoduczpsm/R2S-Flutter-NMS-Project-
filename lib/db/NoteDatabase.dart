@@ -86,5 +86,20 @@ class NoteSQLHelper {
     return maps.isEmpty;
   }
 
+  static Future<List<Map<String, dynamic>>> getNumOfStatusInNote(int userId) async {
+    final db = await AppSQLHelper.db();
+
+    final maps = await db.rawQuery('''
+      SELECT 
+        ${Constant.KEY_TABLE_STATUS}.${Constant.KEY_STATUS_NAME} as ${Constant.KEY_NOTE_STATUS_NAME},
+        COUNT(${Constant.KEY_TABLE_NOTE}.${Constant.KEY_NOTE_STATUS_ID}) as ${Constant.KEY_STATUS_COUNT}
+      FROM ${Constant.KEY_TABLE_NOTE}
+        LEFT JOIN ${Constant.KEY_TABLE_STATUS} ON ${Constant.KEY_TABLE_NOTE}.${Constant.KEY_NOTE_STATUS_ID} = ${Constant.KEY_TABLE_STATUS}.${Constant.KEY_STATUS_ID}
+      WHERE ${Constant.KEY_TABLE_NOTE}.${Constant.KEY_NOTE_USER_ID} = ?
+      GROUP BY ${Constant.KEY_TABLE_STATUS}.${Constant.KEY_STATUS_NAME}
+    ''', [userId]);
+
+    return maps;
+  }
 
 }
